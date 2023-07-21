@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Dao.cartDao;
 import Dao.orderDao;
 import Dao.productDao;
-import Model.Cart;
-import Model.Cartdetail;
+
 import Model.Order;
 import Model.Orderdetail;
 import Model.Product;
