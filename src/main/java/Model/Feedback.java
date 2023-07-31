@@ -10,11 +10,11 @@ public class Feedback {
 	private String subject;
 	private String message;
 	private Date create_at;
-	private int user_id;
 	private int status;
+	private int user_id;
 	
-	public Feedback(int id, String name, String email, String subject, String message, Date create_at, int user_id,
-			int status) {
+	public Feedback(int id, String name, String email, String subject, String message, Date create_at,
+			int status,int user_id) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -22,20 +22,22 @@ public class Feedback {
 		this.subject = subject;
 		this.message = message;
 		this.create_at = create_at;
-		this.user_id = user_id;
+	
 		this.status = status;
+		this.user_id = user_id;
 	}
 	
-	public Feedback( String name, String email, String subject, String message, Date create_at, int user_id,
-			int status) {
+	public Feedback( String name, String email, String subject, String message, Date create_at, 
+			int status,int user_id) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.subject = subject;
 		this.message = message;
 		this.create_at = create_at;
-		this.user_id = user_id;
+		
 		this.status = status;
+		this.user_id = user_id;
 	}
 
 	public int getId() {
@@ -86,13 +88,7 @@ public class Feedback {
 		this.create_at = create_at;
 	}
 
-	public int getUser_id() {
-		return user_id;
-	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
 
 	public int getStatus() {
 		return status;
@@ -102,10 +98,20 @@ public class Feedback {
 		this.status = status;
 	}
 
+	
+	
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
 	@Override
 	public String toString() {
 		return "feedback [id=" + id + ", name=" + name + ", email=" + email + ", subject=" + subject + ", message="
-				+ message + ", create_at=" + create_at + ", user_id=" + user_id + ", status=" + status + "]";
+				+ message + ", create_at=" + create_at  + ", status=" + status + "]";
 	}
 	
 	

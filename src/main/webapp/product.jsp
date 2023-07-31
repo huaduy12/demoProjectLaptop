@@ -9,6 +9,7 @@
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
     <jsp:useBean id="reviewDao" class="Dao.reviewDao" scope="application" />
+    <jsp:useBean id="productDao" class="Dao.productDao" scope="application" />
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,6 +50,12 @@
         display: none;
         color: red;
       }
+ .numberpage:focus{
+         color:#fff;
+     }
+     li.active .numberpage{
+         color:#fff;
+     }
 </style>
     
   </head>
@@ -108,7 +115,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li><a href="store.jsp">Cửa hàng</a></li>
+            <li><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -129,7 +136,7 @@
           <div class="col-md-12">
             <ul class="breadcrumb-tree">
               <li><a href="index.jsp">Trang chủ</a></li>
-              <li><a href="store.jsp">Sản phẩm</a></li>
+              <li><a href="store">Sản phẩm</a></li>
               <li class="active">Thông tin chi tiết</li>
             </ul>
           </div>
@@ -260,7 +267,7 @@
               </p>
 
 				<!-- màu với size là tạm thòi chưa xử lý -->
-              <div class="product-options">
+           <!--     <div class="product-options">
                 <label>
                   Size
                   <select class="input-select">
@@ -274,7 +281,7 @@
                   </select>
                 </label>
               </div>
-
+-->
                
                 <%
                 User user = (User) session.getAttribute("user");
@@ -286,7 +293,7 @@
                           <%} %>
                         <% if(user == null){ %>
                            <button class="btn" onclick="redirectToLogin()">
-                            <i class="fa fa-heart-o"></i
+                            <i class="fa fa-heart-o" style="margin-right: 5px"></i
                             ><span class="tooltipp">Yêu thích</span>
                           </button>
                           <%} %>  
@@ -304,7 +311,7 @@
              <% if(user != null){ %>
               <form action="buynowServlet" method="get">
                <input type="hidden" value="${product.getId()}" name = 'idproductcheckout'>
-               <button class="add-to-cart-btn">
+               <button class="add-to-cart-btn" style="margin-right: 10px;">
                   <i class="fa fa-shopping-cart"></i> Mua ngay
                 </button>
               </form>
@@ -313,7 +320,7 @@
               <% if(user == null){ %>
              
               
-               <button class="add-to-cart-btn" onclick="redirectToLogin()">
+               <button class="add-to-cart-btn" onclick="redirectToLogin()" style="margin-right: 10px;">
                   <i class="fa fa-shopping-cart"></i> Mua ngay
                 </button>
           
@@ -369,21 +376,22 @@
             <div id="product-tab">
               <!-- product tab nav -->
               <ul class="tab-nav">
-                <li class="active">
+                <li class="${page == 1 ? 'active': '' }">
                   <a data-toggle="tab" href="#tab1">Thông tin chi tiết</a>
                 </li>
                
                <% Product product =(Product) request.getAttribute("product");
                  int count = reviewDao.getCountReview(product.getId());
                %>
-                <li><a data-toggle="tab" href="#tab3" >Đánh giá (<%=count%>)</a></li>
+                <li class = "${page > 1 ? 'active': '' }"><a data-toggle="tab" href="#tab3" >Đánh giá (<%=count%>)</a></li>
+               
               </ul>
               <!-- /product tab nav -->
 
               <!-- product tab content -->
               <div class="tab-content">
                 <!-- tab1  -->
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" class="tab-pane fade in ${page == 1 ? 'active': '' }">
                   <div class="row">
                     <div class="col-md-12">
                       <p>
@@ -396,8 +404,8 @@
 
               
 
-                <!-- tab3  -->
-                <div id="tab3" class="tab-pane fade in">
+                <!-- tab2  -->
+                <div id="tab3" class="tab-pane fade in ${page > 1 ? 'active': '' }">
                   <div class="row">
                     <!-- Rating -->
                     <div class="col-md-3">
@@ -494,7 +502,7 @@
                           percentFormat4.setMaximumFractionDigits(1); // Giữ 1 số thập phân
 
                           // Định dạng số thành dạng phần trăm với 1 số thập phân
-                          String formattedPercentage4 = percentFormat4.format(number5);
+                          String formattedPercentage4 = percentFormat4.format(number4);
                           %>
                             <div class="rating-stars">
                               <i class="fa fa-star"></i>
@@ -583,68 +591,137 @@
                     <!-- /Rating -->
 
 
+
                     <!-- Reviews -->
                     <div class="col-md-6">
                       <div id="reviews">
+                      
+                      
                         <ul class="reviews">
-                        
-                       <% 
- 					
-  					 List<Review> reviews = reviewDao.getListReviews(product.getId());
-  					 for(Review review : reviews){
-  						 
-						%>
-
+                          
+                          <c:forEach items="${reviews}" var="o">
+                          
+                         
                           <li>
                             <div class="review-heading">
-                              <h5 class="name"><%=review.getName()%></h5>
-                              <p class="date"><%=review.getCreate_at()%></p>
+                              <h5 class="name">${o.getName()}</h5>
+                              <p class="date">${o.getCreate_at()}</p>
                               <div class="review-rating">
-                              <%for(int i = 1;i<= review.getRating();i++){ %>
-                                <i class="fa fa-star"></i>
-                                <%} %>
-                               <%if(review.getRating() == 4){ %> 
-                                    <i class="fa fa-star-o empty"></i>
-                               <%} %>
+                              
+                                
+                               <c:forEach begin="1" end="${o.getRating()}">
+                                 <i class="fa fa-star"></i>
+                               </c:forEach>
                                
-                               <%if(review.getRating() == 3){ %> 
-                                    <i class="fa fa-star-o empty"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                               <%} %>
-                               
-                               <%if(review.getRating() == 2){ %> 
-                                    <i class="fa fa-star-o empty"></i>
-                                     <i class="fa fa-star-o empty"></i>
-                                      <i class="fa fa-star-o empty"></i>
-                               <%} %>
-                               
-                               <%if(review.getRating() == 1){ %> 
-                                <i class="fa fa-star-o empty"></i>
-                                 <i class="fa fa-star-o empty"></i>
+                               <c:if test="${o.getRating() ==4}">
                                   <i class="fa fa-star-o empty"></i>
+                               </c:if>
+                               
+                                <c:if test="${o.getRating() ==3}">
+                                  <i class="fa fa-star-o empty"></i>
+                                   <i class="fa fa-star-o empty"></i>
+                               </c:if>
+                               
+                               <c:if test="${o.getRating() ==2}">
+                                  <i class="fa fa-star-o empty"></i>
+                                   <i class="fa fa-star-o empty"></i>
                                     <i class="fa fa-star-o empty"></i>
-                               <%} %>
+                               </c:if>
+                               
+                               <c:if test="${o.getRating() ==1}">
+                                  <i class="fa fa-star-o empty"></i>
+                                   <i class="fa fa-star-o empty"></i>
+                                    <i class="fa fa-star-o empty"></i>
+                                    <i class="fa fa-star-o empty"></i>
+                               </c:if>
                               </div>
                             </div>
                             <div class="review-body">
                               <p>
-                                <%=review.getContent()%>
+                                ${o.getContent()}
                               </p>
                             </div>
                           </li>
-                       <%} %>
+                       </c:forEach>
+                       
                         </ul>
                         
                         
                         <ul class="reviews-pagination">
-                          <li class="active">1</li>
-                          <li><a href="#">2</a></li>
-                          <li><a href="#">3</a></li>
-                          <li><a href="#">4</a></li>
-                          <li>
-                            <a href="#"><i class="fa fa-angle-right"></i></a>
-                          </li>
+                        
+                         
+                        
+                    <c:if test="${numberPage <=6}">
+                  
+                     <c:forEach begin="${1}" end="${numberPage}" var="i">
+                           <li class ="${(requestScope.page) == i ? 'active':''}" >
+                               <a class = "numberpage" href="inforDatailServlet?id=${product.getId()}&page=${i}">${i}</a>
+                           </li>
+                     </c:forEach>
+                  </c:if>
+              
+                <c:if test="${numberPage > 6}">
+					    <c:set value="1" var="startPage">
+						</c:set>
+						<c:set value="6" var="endPage">
+						</c:set>
+		
+						<c:if test="${page >=5}">
+							<c:set value="${page-2}" var="startPage">
+							</c:set>
+							<c:set value="${page+2}" var="endPage">
+							</c:set>
+						</c:if>
+		
+						<c:if test="${numberPage == page}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						<c:if test="${page == numberPage-1}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						
+						
+					
+				
+				<!-- Previous -->
+				<c:if test="${page !=1}">
+					
+					 <li >
+					  <a class = "numberpage" href="inforDatailServlet?id=${product.getId()}&page=${page-1}"><i class="fa fa-angle-left"></i></a>
+			
+					
+                       </li>
+				</c:if>
+				
+				
+				<c:if test="${page >= 5}">
+					<li class="page-item ${(requestScope.page) == 1 ? 'active':''}">
+					
+					  <a class = "numberpage" href="inforDatailServlet?id=${product.getId()}&page=${1}">${1}</a>
+					</li>
+					<li class="page-item"><a class="page-link">...</a></li>
+				</c:if>
+				
+				<c:forEach begin="${startPage}" end="${endPage}" var="i">
+
+					 <li class ="${(requestScope.page) == i ? 'active':''}" >
+					 <a class = "numberpage" href="inforDatailServlet?id=${product.getId()}&page=${i}">${i}</a>
+				</c:forEach>
+				
+				<c:if test="${page != numberPage}">
+					  <li >
+					   <a class = "numberpage" href="inforDatailServlet?id=${product.getId()}&page=${page+1}"><i class="fa fa-angle-right"></i></a>           
+                       </li>
+				</c:if>
+				
+				
+				</c:if>          
                         </ul>
+                        
+                        
+                        
                       </div>
                     </div>
                     <!-- /Reviews -->
@@ -682,7 +759,7 @@
                             id = "content"
                           ></textarea>
                            <span id="content-error" class="error-message"
-                  >Vui lòng nhập nội dung hợp lệ(lớn hơn 8 ký tự)
+                  >Vui lòng nhập nội dung hợp lệ
                 </span>
                           <div class="input-rating">
                             <span>Đánh giá: </span>
@@ -740,91 +817,188 @@
     </div>
     <!-- /SECTION -->
 
-    <!-- Section -->
-    <div class="section" id = "relate">
+    
+    
+    
+      <!-- SECTION -->
+    <div class="section">
       <!-- container -->
       <div class="container">
         <!-- row -->
         <div class="row">
+          <!-- section title -->
           <div class="col-md-12">
-            <div class="section-title text-center">
+            <div class="section-title">
               <h3 class="title">Những sản phẩm liên quan</h3>
             </div>
           </div>
+          <!-- /section title -->
 
-        
-   <c:forEach items="${productRelate}" var="o">
-   			 <!-- product -->
-          <div class="col-md-3 col-xs-6">
-            <div class="product">
-              <div class="product-img">
-                <img src="${o.thumbnail}" alt="" />
-                <div class="product-label">
-                  <span class="new">NEW</span>
-                </div>
-              </div>
-              <div class="product-body">
-                <p class="product-category">${category}</p>
-                <h3 class="product-name">
-                  <a href="inforDatailServlet?id=${o.getId()}">${o.name}</a>
-                </h3>
-                <h4 class="product-price">
-                  <fmt:formatNumber value="${o.getDiscount()}" type="currency" /> <del class="product-old-price">
-                    <fmt:formatNumber value="${o.getPrice()}" type="currency" /></del>
-                </h4>
-                <div class="product-rating">
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                </div>
-                <div class="product-btns">
-                
-                  <button class="add-to-wishlist" onclick="addToWishlist(${o.getId()})">
+          <!-- Products tab & slick -->
+          <div class="col-md-12">
+            <div class="row">
+              <div class="products-tabs">
+                <!-- tab -->
+                <div id="tab2" class="tab-pane fade in active">
+                  <div class="products-slick" data-nav="#slick-nav-2">
+                  
+ 			<% List<Product> productRelate = productDao.getListProductByCategory(product.getCategory_id(), product.getId());
+               
+              	 for(Product pro : productRelate) {%>
+                    <!-- product -->
+                    
+                    <div class="product">
+                      <div class="product-img">
+                        <img src="<%=pro.getThumbnail()%>" alt="" />
+                        <div class="product-label">
+                        <span class="sale">-20%</span>
+                          <span class="new">Mới</span>
+                        </div>
+                      </div>
+                      <div class="product-body">
+                        <p class="product-category"><%=productDao.getNameCategory(pro.getCategory_id()) %></p>
+                        <h3 class="product-name">
+                          <a href="inforDatailServlet?id=<%=pro.getId()%>"><%=pro.getName()%></a>
+                        </h3>
+                        <h4 class="product-price">
+                          <%=new java.text.DecimalFormat("#,###").format(pro.getDiscount())%> <del class="product-old-price">
+                           <%=new java.text.DecimalFormat("#,###").format(pro.getPrice())%></del>
+                        </h4>
+                        <%   float a = reviewDao.getAVGReview(product.getId()); %>
+               
+                <%if(a == 0){ %>
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                          </div>
+                         <%} %>
+                 
+                 <%if(a > 0 && a < 2){ %>
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         <%} %>
+                         
+                          <%if(a >= 2 && a <3){ %>
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         <%} %>
+                         
+                          <%if(a >=3 && a <4){ %>
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         <%} %>
+                         
+                          <%if(a >=4 && a < 5){ %>
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         <%} %>
+                         
+                         <%if(a ==5){ %>
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                          </div>
+                         <%} %>
+                       
+                         <p>Lượt quan tâm: <%=pro.getQuantity()%> </p>
+                        <div class="product-btns">
+                       
+                       
+                       <%
+                          if(user != null){ %>
+                           <button class="add-to-wishlist" onclick="addToWishlist(<%=pro.getId()%>)">
                             <i class="fa fa-heart-o"></i
                             ><span class="tooltipp">Yêu thích</span>
                           </button>
-                      
-                  <button class="add-to-compare">
-                    <i class="fa fa-exchange"></i
-                    ><span class="tooltipp"></span>
-                  </button>
-                  
-                  <button class="quick-view">
-                          <a href="inforDatailServlet?id=${o.getId()}"><i class="fa fa-eye"></i
+                          <%} %>
+                        <% if(user == null){ %>
+                           <button class="add-to-wishlist" onclick="redirectToLogin()">
+                            <i class="fa fa-heart-o"></i
+                            ><span class="tooltipp">Yêu thích</span>
+                          </button>
+                          <%} %>  
+                         
+                        
+                        
+                          
+                          <button class="add-to-compare">
+                            <i class="fa fa-exchange"></i
+                            >
+                          </button>
+                          <button class="quick-view">
+                          <a href="inforDatailServlet?id=<%=pro.getId()%>"><i class="fa fa-eye"></i
                             ><span class="tooltipp">Xem sản phẩm</span></a>
    
                           </button>
-                </div>
-              </div>
-              
-               <form action="addOrderServlet" method="post">
+                        </div>
+                      </div>
+                       <%
+                       if(user == null){ %>
+                    	       <div class="add-to-cart">
+                       
+                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      <% }
+                      %>
+                      
+                      <%if(user != null){ %>
+                      <form action="addOrderServlet" method="post">
                       <div class="add-to-cart">
-                        <input type="hidden" value="${o.getId()}" name = 'idproductcart'>
+                        <input type="hidden" value="<%=pro.getId()%>" name = 'idproductcart'>
                         <button class="add-to-cart-btn" type="submit" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
                       </form>
+                      <%} %>
+                      
+                    </div>
+                    <!-- /product -->
+             <%} %>      
+                  </div>
+                  <div id="slick-nav-2" class="products-slick-nav"></div>
+                </div>
+                <!-- /tab -->
+              </div>
             </div>
           </div>
-          <!-- /product -->
-   
-   
-   </c:forEach>
-         
-          
-
-         
-
-        
+          <!-- /Products tab & slick -->
         </div>
         <!-- /row -->
       </div>
       <!-- /container -->
     </div>
-    <!-- /Section -->
+    <!-- /SECTION -->
+    
+    
 
     <!-- NEWSLETTER -->
     <div id="newsletter" class="section">
@@ -913,7 +1087,7 @@
       }
 
       function checkName() {
-        let regex = /^[a-zA-Z0-9]{1,}$/;
+    	  let regex = /^[a-zA-Z0-9\s\u00C0-\u024F\u1E00-\u1EFF]+$/;
         if (!regex.test(username.value)) {
           username.focus();
           errorUsername.style.display = "block";
@@ -936,7 +1110,7 @@
       }
 
       function checkContent() {
-          let regex = /^[a-zA-Z0-9]{8,}$/;
+    	  let regex = /^[a-zA-Z0-9\s\u00C0-\u024F\u1E00-\u1EFF]+$/;
           if (!regex.test(content.value)) {
             content.focus();
             errorContent.style.display = "block";
@@ -1004,8 +1178,8 @@ $(document).ready(function() {
     $('#myModal').modal('show');
     setTimeout(function() {
         $('#myModal').modal('hide');
-      }, 1000);
-    <% session.removeAttribute("cartMessage"); // Xóa thông báo sau khi hiển thị
+      }, 1000); 
+   <% session.removeAttribute("cartMessage"); // Xóa thông báo sau khi hiển thị
      } %>
 });
 </script>

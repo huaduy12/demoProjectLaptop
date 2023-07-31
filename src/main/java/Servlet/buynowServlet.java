@@ -86,6 +86,7 @@ public class buynowServlet extends HttpServlet {
 			Orderdetail orderdetail = new Orderdetail(product.getDiscount(), 1,product.getDiscount(), product.getId(), order_id,1);
 			
 			orderDao.addOrderdetailStatus(orderdetail);
+			productDao.updateQuantity(product.getId(), 1);
 		}
       	
 		HttpSession session = request.getSession();

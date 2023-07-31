@@ -1,3 +1,4 @@
+<%@page import="Model.Category"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -7,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="Model.Product"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,6 +56,7 @@
   font-weight: 700;
   border: none;
   border-radius: 40px;
+  margin-top: 15px;
      }
      
      .btn-filter:hover{
@@ -62,7 +65,16 @@
      .btn-filter:focus{
         color: #fff;
      }
+     
+     .numberpage:focus{
+         color:#fff;
+     }
+     li.active .numberpage{
+         color:#fff;
+     }
     </style>
+    
+  <c:set value="${tag}" var="a"></c:set>
   </head>
   <body>
     <jsp:include page="header.jsp"></jsp:include>
@@ -131,7 +143,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li class="active"><a href="store.jsp">Cửa hàng</a></li>
+            <li class="active"><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -172,89 +184,58 @@
           <div id="aside" class="col-md-3">
             <!-- aside Widget -->
             <div class="aside">
-              <h3 class="aside-title">Categories</h3>
+              <h3 class="aside-title">Hãng sản xuất</h3>
+           <form action="searchServlet" method="post">
               <div class="checkbox-filter">
+              <%
+              
+                    	List<Category> categories = productDao.getListCategorys();
+                        for(Category category : categories){
+                        	
+                    %>
+           
+               
                 <div class="input-checkbox">
-                  <input type="checkbox" id="category-1" />
-                  <label for="category-1">
+                 
+                  <input type="checkbox" id="category-<%=category.getId()%>" name = "checkboxSearch" value="<%=category.getId()%>" />
+                  <label for="category-<%= category.getId() %>">
                     <span></span>
-                    Laptops
-                    <small>(120)</small>
+                   <%=category.getName() %>
+                   <%int c = productDao.getCountProduct(category.getId()); %>
+                    <small>( <%=c%> )</small>
                   </label>
                 </div>
 
-                <div class="input-checkbox">
-                  <input type="checkbox" id="category-2" />
-                  <label for="category-2">
-                    <span></span>
-                    Smartphones
-                    <small>(740)</small>
-                  </label>
-                </div>
-
-                <div class="input-checkbox">
-                  <input type="checkbox" id="category-3" />
-                  <label for="category-3">
-                    <span></span>
-                    Cameras
-                    <small>(1450)</small>
-                  </label>
-                </div>
-
-                <div class="input-checkbox">
-                  <input type="checkbox" id="category-4" />
-                  <label for="category-4">
-                    <span></span>
-                    Accessories
-                    <small>(578)</small>
-                  </label>
-                </div>
-
-                <div class="input-checkbox">
-                  <input type="checkbox" id="category-5" />
-                  <label for="category-5">
-                    <span></span>
-                    Laptops
-                    <small>(120)</small>
-                  </label>
-                </div>
-
-                <div class="input-checkbox">
-                  <input type="checkbox" id="category-6" />
-                  <label for="category-6">
-                    <span></span>
-                    Smartphones
-                    <small>(740)</small>
-                  </label>
-                </div>
+                 <%    }
+                    %>
               </div>
             </div>
             <!-- /aside Widget -->
 
             <!-- aside Widget -->
             <div class="aside">
-              <h3 class="aside-title">Price</h3>
+              <h3 class="aside-title">Giá</h3>
               <div class="price-filter">
                 <div id="price-slider"></div>
                 
                 <div class="input-number price-min">
-                  <input id="price-min" type="number" />
+                  <input id="price-min" type="number" name = "pricemin"/>
                   <span class="qty-up">+</span>
                   <span class="qty-down">-</span>
                 </div>
                 <span>-</span>
                 
                 <div class="input-number price-max">
-                  <input id="price-max" type="number" />
+                  <input id="price-max" type="number"  name = "pricemax" />
                   <span class="qty-up">+</span>
                   <span class="qty-down">-</span>
                 </div>
                  <span>(đơn vị triệu)</span>
               </div>
-                <button class="btn btn-filter"> Lọc sản phẩm </button>
+                <button class="btn btn-filter" type="submit"> Lọc sản phẩm </button>
             </div>
             <!-- /aside Widget -->
-
+       </form>
            
 
             
@@ -262,77 +243,62 @@
           <!-- /ASIDE -->
 
           <!-- STORE -->
-          <div id="store" class="col-md-9">
-            <!-- store top filter -->
-            <div class="store-filter clearfix">
-              <div class="store-sort">
-                <label>
-                  Sắp xếp theo giá:
-                  <select class="input-select">
-                    <option value="0">Tăng dần</option>
-                    <option value="1">Giảm dần</option>
-                  </select>
-                </label>
-
-               
-              </div>
-              
-            </div>
-            <!-- /store top filter -->
-
+    <div id="store" class="col-md-9">
+           
             <!-- store products -->
-            <div class="row">
-            
-           <% List<Product> products = productDao.getListProducts();
-            int count = 0;
-               if(!products.isEmpty()){
-              	 for(Product product : products) {
-              	   count++;
-              	 %>
-                    <!-- product -->
+     <c:if test="${products != null && a ==0 }">
+       <div class="row">
+
+        
+               <c:set var="count" value="0"></c:set>
+              <c:forEach items="${products}" var="o">
+                    <c:set var = "count" value="${count+1}"></c:set>
+                     <!-- product -->
                   <div class="col-md-4 col-xs-6">  
                     <div class="product">
                       <div class="product-img">
-                        <img src="<%=product.getThumbnail()%>" alt="" />
+                        <img src="${o.getThumbnail()}" alt="" />
                         <div class="product-label">
                           <span class="new">Mới</span>
                         </div>
                       </div>
                       <div class="product-body">
-                        <p class="product-category"><%=productDao.getNameCategory(product.getCategory_id()) %></p>
+                        <p class="product-category"><c:out value="${productDao.getNameCategory(o.getCategory_id())}" /></p>
                         <h3 class="product-name">
-                          <a href="inforDatailServlet?id=<%=product.getId()%>"><%=product.getName()%></a>
+                          <a href="inforDatailServlet?id=${o.getId()}">${o.getName()}</a>
                         </h3>
                         <h4 class="product-price">
-                          <%=new java.text.DecimalFormat("#,###").format(product.getDiscount())%> <del class="product-old-price">
-                           <%=new java.text.DecimalFormat("#,###").format(product.getPrice())%></del>
+                          <fmt:formatNumber value="${o.getDiscount()}" type="currency" /> <del class="product-old-price">
+                           <fmt:formatNumber value="${o.getPrice()}" type="currency" /></del>
                         </h4>
                        
                         
-                        <%   float avg = reviewDao.getAVGReview(product.getId()); %>
+                  <c:set var="avg" value="${reviewDao.getAVGReview(o.getId())}" />
                  
                  
-                 <%if(avg == 0){ %>
+                 <c:choose>
+				 	 <c:when test="${avg == 0}">
+				  	  	<div class="product-rating">
+				   	  		 <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				    		  <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				      		<i class="fa fa-star"></i>
+				    	</div>
+  					</c:when>
+ 
+				
+                  <c:when test="${avg > 0 && avg < 2}">
                            <div class="product-rating">
                             <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                          </div>
-                         <%} %>
-                 
-                 <%if(avg > 0 && avg < 2){ %>
-                           <div class="product-rating">
-                            <i class="fa fa-star"></i>
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                           </div>
-                         <%} %>
+                   </c:when>
                          
-                          <%if(avg >= 2 && avg <3){ %>
+                   <c:when test="${avg >=2 && avg < 3}">
                           <div class="product-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -340,9 +306,9 @@
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                           </div>
-                         <%} %>
+                   </c:when>
                          
-                          <%if(avg>=3 && avg <4){ %>
+                     <c:when test="${avg >=3 && avg < 4}">
                            <div class="product-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -350,9 +316,9 @@
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                           </div>
-                         <%} %>
+                        </c:when>
                          
-                          <%if(avg >=4 && avg < 5){ %>
+                        <c:when test="${avg >=4 && avg < 5}">
                            <div class="product-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -360,9 +326,9 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star-o"></i>
                           </div>
-                         <%} %>
+                         </c:when>
                          
-                         <%if(avg ==5){ %>
+                         <c:when test="${avg == 5}">
                           <div class="product-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -370,12 +336,16 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                           </div>
-                         <%} %>
+                         </c:when>
+                         
+                         
+                     </c:choose>  
+                         
                         <div class="product-btns">
                         
                          <%User user = (User) session.getAttribute("user");
                           if(user != null){ %>
-                           <button class="add-to-wishlist" onclick="addToWishlist(<%=product.getId()%>)">
+                           <button class="add-to-wishlist" onclick="addToWishlist(${o.getId()})">
                             <i class="fa fa-heart-o"></i
                             ><span class="tooltipp">Yêu thích</span>
                           </button>
@@ -393,7 +363,7 @@
                           </button>
                           
                           <button class="quick-view">
-                          <a href="inforDatailServlet?id=<%=product.getId()%>"><i class="fa fa-eye"></i
+                          <a href="inforDatailServlet?id=${o.getId()}"><i class="fa fa-eye"></i
                             ><span class="tooltipp">Xem sản phẩm</span></a>
    
                           </button>
@@ -412,7 +382,7 @@
                       <%if(user != null){ %>
                       <form action="addOrderServlet" method="post">
                       <div class="add-to-cart">
-                        <input type="hidden" value="<%=product.getId()%>" name = 'idproductcart'>
+                        <input type="hidden" value="${o.getId()}" name = 'idproductcart'>
                         <button class="add-to-cart-btn" type="submit" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
@@ -422,48 +392,597 @@
                     </div>
                    </div>
                     <!-- /product -->
-                    
-                    <%if(count % 2 ==0 && count % 6 != 0){ %>
-				<!-- /chia hết cho 2 -->
-              <div class="clearfix visible-sm visible-xs"></div>
-             <%} %>
+     <c:if test="${count % 2 == 0 && count % 6 != 0}">
+    <!-- /chia hết cho 2 và không chia hết cho 6 -->
+    <div class="clearfix visible-sm visible-xs"></div>
+  </c:if>
+  <c:if test="${count % 3 == 0}">
+    <!-- /chia hết cho 3 -->
+    <div class="clearfix visible-lg visible-md"></div>
+  </c:if>
+  <c:if test="${count % 6 == 0 && count % 2 != 0}">
+    <!-- /chia hết cho 6 và không chia hết cho 2 -->
+    <div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
+  </c:if>
               
-               <%if(count % 3 ==0){ %>
-				<!-- /chia hết cho 3 -->
-              <div class="clearfix visible-lg visible-md"></div>
-               <%} %>
+      </c:forEach>
               
-
-             
-
-               <%if(count % 6 ==0 && count % 2 !=0){ %>
-				<!-- /chia hết cho 6 -->
-              <div
-                class="clearfix visible-lg visible-md visible-sm visible-xs"
-              ></div>
-              <%} %>
               
-             <%}
-             }
-             %>
-
-            </div>
-            <!-- /store products -->
+   </div>
+   <!-- Hết row -->
+       <!-- /store products -->
 
             <!-- store bottom filter -->
             <div class="store-filter clearfix">
               
               <ul class="store-pagination">
-                <li class="active">1</li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li>
-                  <a href="#"><i class="fa fa-angle-right"></i></a>
-                </li>
+              
+              
+                 
+                  <c:if test="${numberPage <=6}">
+                  
+                     <c:forEach begin="${1}" end="${numberPage}" var="i">
+                           <li class ="${(requestScope.page) == i ? 'active':''}" ><a class = "numberpage" href="store?page=${i}">${i}</a></li>
+                     </c:forEach>
+                  </c:if>
+              
+                <c:if test="${numberPage > 6}">
+					    <c:set value="1" var="startPage">
+						</c:set>
+						<c:set value="6" var="endPage">
+						</c:set>
+		
+						<c:if test="${page >=5}">
+							<c:set value="${page-2}" var="startPage">
+							</c:set>
+							<c:set value="${page+2}" var="endPage">
+							</c:set>
+						</c:if>
+		
+						<c:if test="${numberPage == page}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						<c:if test="${page == numberPage-1}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						
+						
+					
+				
+				<!-- Previous -->
+				<c:if test="${page !=1}">
+					
+					 <li >
+                         <a class = "numberpage" href="store?page=${page-1}"><i class="fa fa-angle-left"></i></a>
+                       </li>
+				</c:if>
+				
+				
+				<c:if test="${page >= 5}">
+					<li class="page-item ${(requestScope.page) == 1 ? 'active':''}">
+					<a class="page-link" href="store?page=${1}">${1}</a>
+					</li>
+					<li class="page-item"><a class="page-link">...</a></li>
+				</c:if>
+				
+				<c:forEach begin="${startPage}" end="${endPage}" var="i">
+
+					 <li class ="${(requestScope.page) == i ? 'active':''}" ><a class = "numberpage"  href="store?page=${i}">${i}</a></li>
+				</c:forEach>
+				
+				<c:if test="${page != numberPage}">
+					  <li >
+                         <a href="store?page=${page+1}"><i class="fa fa-angle-right"></i></a>
+                       </li>
+				</c:if>
+				
+				
+				</c:if>          
               </ul>
             </div>
             <!-- /store bottom filter -->
+            
+        </c:if>
+        <!-- kết thúc phân trang ở store.jsp -->
+        
+        
+        <!-- phân trang theo tìm kiếm -->
+        
+        
+        <c:if test="${products != null && a ==1 }">
+       <div class="row">
+
+        
+               <c:set var="count" value="0"></c:set>
+              <c:forEach items="${products}" var="o">
+                    <c:set var = "count" value="${count+1}"></c:set>
+                     <!-- product -->
+                  <div class="col-md-4 col-xs-6">  
+                    <div class="product">
+                      <div class="product-img">
+                        <img src="${o.getThumbnail()}" alt="" />
+                        <div class="product-label">
+                          <span class="new">Mới</span>
+                        </div>
+                      </div>
+                      <div class="product-body">
+                        <p class="product-category"><c:out value="${productDao.getNameCategory(o.getCategory_id())}" /></p>
+                        <h3 class="product-name">
+                          <a href="inforDatailServlet?id=${o.getId()}">${o.getName()}</a>
+                        </h3>
+                        <h4 class="product-price">
+                          <fmt:formatNumber value="${o.getDiscount()}" type="currency" /> <del class="product-old-price">
+                           <fmt:formatNumber value="${o.getPrice()}" type="currency" /></del>
+                        </h4>
+                       
+                        
+                  <c:set var="avg" value="${reviewDao.getAVGReview(o.getId())}" />
+                 
+                 
+                 <c:choose>
+				 	 <c:when test="${avg == 0}">
+				  	  	<div class="product-rating">
+				   	  		 <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				    		  <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				      		<i class="fa fa-star"></i>
+				    	</div>
+  					</c:when>
+ 
+				
+                  <c:when test="${avg > 0 && avg < 2}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                   </c:when>
+                         
+                   <c:when test="${avg >=2 && avg < 3}">
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                   </c:when>
+                         
+                     <c:when test="${avg >=3 && avg < 4}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                        </c:when>
+                         
+                        <c:when test="${avg >=4 && avg < 5}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         </c:when>
+                         
+                         <c:when test="${avg == 5}">
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                          </div>
+                         </c:when>
+                         
+                         
+                     </c:choose>  
+                         
+                        <div class="product-btns">
+                        
+                         <%User user = (User) session.getAttribute("user");
+                          if(user != null){ %>
+                           <button class="add-to-wishlist" onclick="addToWishlist(${o.getId()})">
+                            <i class="fa fa-heart-o"></i
+                            ><span class="tooltipp">Yêu thích</span>
+                          </button>
+                          <%} %>
+                        <% if(user == null){ %>
+                           <button class="add-to-wishlist" onclick="redirectToLogin()">
+                            <i class="fa fa-heart-o"></i
+                            ><span class="tooltipp">Yêu thích</span>
+                          </button>
+                          <%} %>  
+                          
+                          <button class="add-to-compare">
+                            <i class="fa fa-exchange"></i
+                            >
+                          </button>
+                          
+                          <button class="quick-view">
+                          <a href="inforDatailServlet?id=${o.getId()}"><i class="fa fa-eye"></i
+                            ><span class="tooltipp">Xem sản phẩm</span></a>
+   
+                          </button>
+                        </div>
+                      </div>
+                      <%
+                       if(user == null){ %>
+                     <div class="add-to-cart">
+                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      <% }
+                      %>
+                      
+                      <%if(user != null){ %>
+                      <form action="addOrderServlet" method="post">
+                      <div class="add-to-cart">
+                        <input type="hidden" value="${o.getId()}" name = 'idproductcart'>
+                        <button class="add-to-cart-btn" type="submit" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      </form>
+                      <%} %>
+                    </div>
+                   </div>
+                    <!-- /product -->
+     <c:if test="${count % 2 == 0 && count % 6 != 0}">
+    <!-- /chia hết cho 2 và không chia hết cho 6 -->
+    <div class="clearfix visible-sm visible-xs"></div>
+  </c:if>
+  <c:if test="${count % 3 == 0}">
+    <!-- /chia hết cho 3 -->
+    <div class="clearfix visible-lg visible-md"></div>
+  </c:if>
+  <c:if test="${count % 6 == 0 && count % 2 != 0}">
+    <!-- /chia hết cho 6 và không chia hết cho 2 -->
+    <div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
+  </c:if>
+              
+      </c:forEach>
+              
+              
+   </div>
+   <!-- Hết row -->
+       <!-- /store products -->
+
+            <!-- store bottom filter -->
+            <div class="store-filter clearfix">
+              
+              <ul class="store-pagination">
+              
+              
+                 
+                  <c:if test="${numberPage <=6}">
+                  
+                     <c:forEach begin="${1}" end="${numberPage}" var="i">
+                           <li class ="${(requestScope.page) == i ? 'active':''}" >
+                               <a class = "numberpage" href="searchServlet?checkboxSearch=${checkbox}&pricemin=${pricemin}&pricemax=${pricemax}&page=${i}">${i}</a>
+                           </li>
+                     </c:forEach>
+                  </c:if>
+              
+                <c:if test="${numberPage > 6}">
+					    <c:set value="1" var="startPage">
+						</c:set>
+						<c:set value="6" var="endPage">
+						</c:set>
+		
+						<c:if test="${page >=5}">
+							<c:set value="${page-2}" var="startPage">
+							</c:set>
+							<c:set value="${page+2}" var="endPage">
+							</c:set>
+						</c:if>
+		
+						<c:if test="${numberPage == page}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						<c:if test="${page == numberPage-1}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						
+						
+					
+				
+				<!-- Previous -->
+				<c:if test="${page !=1}">
+					
+					 <li >
+					 <a class = "numberpage" href="searchServlet?checkboxSearch=${checkbox}&pricemin=${pricemin}&pricemax=${pricemax}&page=${page-1}"><i class="fa fa-angle-left"></i></a>
+                         
+                       </li>
+				</c:if>
+				
+				
+				<c:if test="${page >= 5}">
+					<li class="page-item ${(requestScope.page) == 1 ? 'active':''}">
+					<a class = "numberpage" href="searchServlet?checkboxSearch=${checkbox}&pricemin=${pricemin}&pricemax=${pricemax}&page=${1}">${1}</a>
+					
+					</li>
+					<li class="page-item"><a class="page-link">...</a></li>
+				</c:if>
+				
+				<c:forEach begin="${startPage}" end="${endPage}" var="i">
+
+					 <li class ="${(requestScope.page) == i ? 'active':''}" >
+					 <a class = "numberpage" href="searchServlet?checkboxSearch=${checkbox}&pricemin=${pricemin}&pricemax=${pricemax}&page=${i}">${i}</a>
+				</c:forEach>
+				
+				<c:if test="${page != numberPage}">
+					  <li >
+                       <a class = "numberpage" href="searchServlet?checkboxSearch=${checkbox}&pricemin=${pricemin}&pricemax=${pricemax}&page=${page+1}"><i class="fa fa-angle-right"></i></a>
+                       </li>
+				</c:if>
+				
+				
+				</c:if>          
+              </ul>
+            </div>
+            <!-- /store bottom filter -->
+            
+        </c:if>
+        
+        
+         <c:if test="${products != null && a ==2 }">
+       <div class="row">
+
+        
+               <c:set var="count" value="0"></c:set>
+              <c:forEach items="${products}" var="o">
+                    <c:set var = "count" value="${count+1}"></c:set>
+                     <!-- product -->
+                  <div class="col-md-4 col-xs-6">  
+                    <div class="product">
+                      <div class="product-img">
+                        <img src="${o.getThumbnail()}" alt="" />
+                        <div class="product-label">
+                          <span class="new">Mới</span>
+                        </div>
+                      </div>
+                      <div class="product-body">
+                        <p class="product-category"><c:out value="${productDao.getNameCategory(o.getCategory_id())}" /></p>
+                        <h3 class="product-name">
+                          <a href="inforDatailServlet?id=${o.getId()}">${o.getName()}</a>
+                        </h3>
+                        <h4 class="product-price">
+                          <fmt:formatNumber value="${o.getDiscount()}" type="currency" /> <del class="product-old-price">
+                           <fmt:formatNumber value="${o.getPrice()}" type="currency" /></del>
+                        </h4>
+                       
+                        
+                  <c:set var="avg" value="${reviewDao.getAVGReview(o.getId())}" />
+                 
+                 
+                 <c:choose>
+				 	 <c:when test="${avg == 0}">
+				  	  	<div class="product-rating">
+				   	  		 <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				    		  <i class="fa fa-star"></i>
+				     		 <i class="fa fa-star"></i>
+				      		<i class="fa fa-star"></i>
+				    	</div>
+  					</c:when>
+ 
+				
+                  <c:when test="${avg > 0 && avg < 2}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                   </c:when>
+                         
+                   <c:when test="${avg >=2 && avg < 3}">
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                   </c:when>
+                         
+                     <c:when test="${avg >=3 && avg < 4}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                        </c:when>
+                         
+                        <c:when test="${avg >=4 && avg < 5}">
+                           <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                          </div>
+                         </c:when>
+                         
+                         <c:when test="${avg == 5}">
+                          <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                          </div>
+                         </c:when>
+                         
+                         
+                     </c:choose>  
+                         
+                        <div class="product-btns">
+                        
+                         <%User user = (User) session.getAttribute("user");
+                          if(user != null){ %>
+                           <button class="add-to-wishlist" onclick="addToWishlist(${o.getId()})">
+                            <i class="fa fa-heart-o"></i
+                            ><span class="tooltipp">Yêu thích</span>
+                          </button>
+                          <%} %>
+                        <% if(user == null){ %>
+                           <button class="add-to-wishlist" onclick="redirectToLogin()">
+                            <i class="fa fa-heart-o"></i
+                            ><span class="tooltipp">Yêu thích</span>
+                          </button>
+                          <%} %>  
+                          
+                          <button class="add-to-compare">
+                            <i class="fa fa-exchange"></i
+                            >
+                          </button>
+                          
+                          <button class="quick-view">
+                          <a href="inforDatailServlet?id=${o.getId()}"><i class="fa fa-eye"></i
+                            ><span class="tooltipp">Xem sản phẩm</span></a>
+   
+                          </button>
+                        </div>
+                      </div>
+                      <%
+                       if(user == null){ %>
+                     <div class="add-to-cart">
+                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      <% }
+                      %>
+                      
+                      <%if(user != null){ %>
+                      <form action="addOrderServlet" method="post">
+                      <div class="add-to-cart">
+                        <input type="hidden" value="${o.getId()}" name = 'idproductcart'>
+                        <button class="add-to-cart-btn" type="submit" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      </form>
+                      <%} %>
+                    </div>
+                   </div>
+                    <!-- /product -->
+     <c:if test="${count % 2 == 0 && count % 6 != 0}">
+    <!-- /chia hết cho 2 và không chia hết cho 6 -->
+    <div class="clearfix visible-sm visible-xs"></div>
+  </c:if>
+  <c:if test="${count % 3 == 0}">
+    <!-- /chia hết cho 3 -->
+    <div class="clearfix visible-lg visible-md"></div>
+  </c:if>
+  <c:if test="${count % 6 == 0 && count % 2 != 0}">
+    <!-- /chia hết cho 6 và không chia hết cho 2 -->
+    <div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
+  </c:if>
+              
+      </c:forEach>
+              
+              
+   </div>
+   <!-- Hết row -->
+       <!-- /store products -->
+
+            <!-- store bottom filter -->
+            <div class="store-filter clearfix">
+              
+              <ul class="store-pagination">
+              
+                  <c:if test="${numberPage <=6}">
+                  
+                     <c:forEach begin="${1}" end="${numberPage}" var="i">
+                           <li class ="${(requestScope.page) == i ? 'active':''}" >
+                               <a class = "numberpage" href="searchHeraderServlet?cate_id=${cate_id}&namelaptop=${namelaptop}&page=${i}">${i}</a>
+                           </li>
+                     </c:forEach>
+                  </c:if>
+              
+                <c:if test="${numberPage > 6}">
+					    <c:set value="1" var="startPage">
+						</c:set>
+						<c:set value="6" var="endPage">
+						</c:set>
+		
+						<c:if test="${page >=5}">
+							<c:set value="${page-2}" var="startPage">
+							</c:set>
+							<c:set value="${page+2}" var="endPage">
+							</c:set>
+						</c:if>
+		
+						<c:if test="${numberPage == page}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						<c:if test="${page == numberPage-1}">
+							<c:set value="${numberPage}" var="endPage">
+							</c:set>
+						</c:if>
+						
+						
+					
+				
+				<!-- Previous -->
+				<c:if test="${page !=1}">
+					
+					 <li >
+					  <a class = "numberpage" href="searchHeraderServlet?cate_id=${cate_id}&namelaptop=${namelaptop}&page=${page-1}"><i class="fa fa-angle-left"></i></a>
+					
+                       </li>
+				</c:if>
+				
+				
+				<c:if test="${page >= 5}">
+					<li class="page-item ${(requestScope.page) == 1 ? 'active':''}">
+					
+					 <a class = "numberpage" href="searchHeraderServlet?cate_id=${cate_id}&namelaptop=${namelaptop}&page=${1}">${1}</a>
+					</li>
+					<li class="page-item"><a class="page-link">...</a></li>
+				</c:if>
+				
+				<c:forEach begin="${startPage}" end="${endPage}" var="i">
+
+					 <li class ="${(requestScope.page) == i ? 'active':''}" >
+					 <a class = "numberpage" href="searchHeraderServlet?cate_id=${cate_id}&namelaptop=${namelaptop}&page=${i}">${i}</a>
+				</c:forEach>
+				
+				<c:if test="${page != numberPage}">
+					  <li >
+                         <a class = "numberpage" href="searchHeraderServlet?cate_id=${cate_id}&namelaptop=${namelaptop}&page=${page+1}"><i class="fa fa-angle-right"></i></a>
+                       </li>
+				</c:if>
+				
+				
+				</c:if>          
+              </ul>
+            </div>
+            <!-- /store bottom filter -->
+            
+        </c:if>
+        
+            
+            
+            
           </div>
           <!-- /STORE -->
         </div>
@@ -472,6 +991,10 @@
       <!-- /container -->
     </div>
     <!-- /SECTION -->
+
+
+
+
 
     <!-- NEWSLETTER -->
     <div id="newsletter" class="section">
@@ -515,117 +1038,17 @@
     </div>
     <!-- /NEWSLETTER -->
 
-    <!-- FOOTER -->
-    <footer id="footer">
-      <!-- top footer -->
-      <div class="section">
-        <!-- container -->
-        <div class="container">
-          <!-- row -->
-          <div class="row">
-            <div class="col-md-3 col-xs-6">
-              <div class="footer">
-                <h3 class="footer-title">About Us</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut.
-                </p>
-                <ul class="footer-links">
-                  <li>
-                    <a href="#"
-                      ><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><i class="fa fa-envelope-o"></i>email@email.com</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            <div class="col-md-3 col-xs-6">
-              <div class="footer">
-                <h3 class="footer-title">Categories</h3>
-                <ul class="footer-links">
-                  <li><a href="#">Hot deals</a></li>
-                  <li><a href="#">Laptops</a></li>
-                  <li><a href="#">Smartphones</a></li>
-                  <li><a href="#">Cameras</a></li>
-                  <li><a href="#">Accessories</a></li>
-                </ul>
-              </div>
-            </div>
 
-            <div class="clearfix visible-xs"></div>
 
-            <div class="col-md-3 col-xs-6">
-              <div class="footer">
-                <h3 class="footer-title">Information</h3>
-                <ul class="footer-links">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Contact Us</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Orders and Returns</a></li>
-                  <li><a href="#">Terms & Conditions</a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="col-md-3 col-xs-6">
-              <div class="footer">
-                <h3 class="footer-title">Service</h3>
-                <ul class="footer-links">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">View Cart</a></li>
-                  <li><a href="#">Wishlist</a></li>
-                  <li><a href="#">Track My Order</a></li>
-                  <li><a href="#">Help</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <!-- /row -->
-        </div>
-        <!-- /container -->
-      </div>
-      <!-- /top footer -->
-
-      <!-- bottom footer -->
-      <div id="bottom-footer" class="section">
-        <div class="container">
-          <!-- row -->
-          <div class="row">
-            <div class="col-md-12 text-center">
-                <img class="img-fluid" src="img/payments.png" alt="">
-           
-              <span class="copyright">
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                All rights reserved | This template is made with
-                <i class="fa fa-heart-o"></i> by Duy
-               
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              </span>
-            </div>
-            </div>
-          </div>
-          <!-- /row -->
-        </div>
-        <!-- /container -->
-      </div>
-      <!-- /bottom footer -->
-    </footer>
-    <!-- /FOOTER -->
+   
+   
+    <jsp:include page="footer.jsp"></jsp:include>
 
 <script src="js/jquery.min.js"></script>
+
+
+
 
 
   <script>

@@ -19,7 +19,7 @@ public class reviewDao {
 	public List<Review> getListReviews(int product_id) {
 		try (Connection connection = ConnectionUtil.getConnection();
 
-				PreparedStatement st = connection.prepareStatement("select * from review where product_id = ?;");
+				PreparedStatement st = connection.prepareStatement("select * from review where product_id = ? order by created_at desc;");
 				) {
 			st.setInt(1, product_id);
 			ResultSet rs = st.executeQuery();
@@ -47,6 +47,15 @@ public class reviewDao {
 			e.printStackTrace();
 			return Collections.emptyList();
 		}
+	}
+	
+	
+	public List<Review> getReviewByPage(List<Review> list, int start,int end){
+		List<Review> arr = new ArrayList();
+		for (int i = start; i < end; i++) {
+			arr.add(list.get(i));
+		}
+		return arr;
 	}
 	
 	

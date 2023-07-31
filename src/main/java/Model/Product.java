@@ -38,11 +38,45 @@ public class Product {
 		this.update_at = update_at;
 	}
 	
+	
+	public Product(int id, String name, String short_description, double price, double discount, int quantity,
+			String thumbnail, String description, int is_featured, int category_id) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.short_description = short_description;
+		this.price = price;
+		this.discount = discount;
+		this.quantity = quantity;
+		this.thumbnail = thumbnail;
+		this.description = description;
+		this.is_featured = is_featured;
+		
+		this.category_id = category_id;
+		
+	}
+	
+	public Product( String name, String short_description, double price, double discount, int quantity,
+			String thumbnail, String description, int is_featured, int category_id) {
+		super();
+		
+		this.name = name;
+		this.short_description = short_description;
+		this.price = price;
+		this.discount = discount;
+		this.quantity = quantity;
+		this.thumbnail = thumbnail;
+		this.description = description;
+		this.is_featured = is_featured;
+		
+		this.category_id = category_id;
+		
+	}
 	public Product( String name, String short_description, double price, double discount, int quantity,
 			String thumbnail, String description, int is_featured, int status, int category_id, Date create_at,
 			Date update_at) {
 		super();
-		this.id = id;
+	
 		this.name = name;
 		this.short_description = short_description;
 		this.price = price;

@@ -8012,7 +8012,9 @@ fieldset:disabled .btn {
 .text-black-50,
 body {
   --bs-text-opacity: 1;
-  color: rgba(0, 0, 0, 0.5) !important;
+  color: #000 !important;
+  text-align: justify !important;
+  text-justify: inter-word;
 }
 
 .text-white-50 {

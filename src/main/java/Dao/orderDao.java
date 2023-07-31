@@ -154,6 +154,67 @@ public class orderDao {
 		}
 	}
 	
+	
+	public double getTotalOrderHandle() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement(	"select sum(total) from orderdetail where status = 1;");
+				) {
+			
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				double total = rs.getDouble(1);
+				return total;
+			}
+			return 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public String getNameById(int id) {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement(	"select fullname from `order` where id = ?;");
+				) {
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				String t = rs.getString(1);
+				return t;
+			}
+			return null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public int getCountOrderdetail() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement(	"select count(*) from orderdetail;;");
+				) {
+			
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				int total = rs.getInt(1);
+				return total;
+			}
+			return 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	public void addOrder(Order order) {
 		try (
 			Connection conn = ConnectionUtil.getConnection();
@@ -256,6 +317,56 @@ public class orderDao {
 			return Collections.emptyList();
 		}
 	}
+	
+	
+	public List<Orderdetail> getListOrderdetailsLatest() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status is not null order by id desc limit 5;");
+				ResultSet rs = st.executeQuery()) {
+			List<Orderdetail> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double price = rs.getDouble("price");
+				int quantity = rs.getInt("quantity");
+				double total = rs.getDouble("total");
+				int order_id = rs.getInt("order_id");
+				int product_id = rs.getInt("product_id");
+				int status = rs.getInt("status");
+				Orderdetail orderdetail = new Orderdetail(id,price,quantity,total, product_id,order_id,status);
+				result.add(orderdetail);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
+	public List<Orderdetail> getListOrderdetailsAdmin() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status is not null order by id desc;");
+				ResultSet rs = st.executeQuery()) {
+			List<Orderdetail> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double price = rs.getDouble("price");
+				int quantity = rs.getInt("quantity");
+				double total = rs.getDouble("total");
+				int order_id = rs.getInt("order_id");
+				int product_id = rs.getInt("product_id");
+				int status = rs.getInt("status");
+				Orderdetail orderdetail = new Orderdetail(id,price,quantity,total, product_id,order_id,status);
+				result.add(orderdetail);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
 	
 	public List<Orderdetail> getListOrderdetailByOrder_id(int orderid) {
 		try (Connection connection = ConnectionUtil.getConnection();
@@ -561,7 +672,119 @@ public class orderDao {
 	}
 	
 	
+	public List<Orderdetail> getListOrderHandle() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail  where status =1 order by order_id DESC;");
+				) {
+			
+			ResultSet rs = st.executeQuery();
+			List<Orderdetail> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double price = rs.getDouble("price");
+				int quantity = rs.getInt("quantity");
+				double total = rs.getDouble("total");
+				int order_id = rs.getInt("order_id");
+				int product_id = rs.getInt("product_id");
+				int status = rs.getInt("status");
+				Orderdetail orderdetail = new Orderdetail(id,price,quantity,total, product_id,order_id,status);
+				result.add(orderdetail);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
 	
+	public double getSumTotal() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select sum(total) from orderdetail where status = 2;");
+				ResultSet rs = st.executeQuery()) {
+			
+			while (rs.next()) {
+				
+				double c = rs.getDouble(1);
+				
+				
+				return c;
+			}
+			return 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	
+	public int getHandleOrder() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select count(*) from orderdetail where status = 1;");
+				ResultSet rs = st.executeQuery()) {
+			
+			while (rs.next()) {
+				
+				int c = rs.getInt(1);
+				
+				
+				return c;
+			}
+			return 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	
+	public int getCancelOrder() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select count(*) from orderdetail where status = 3;");
+				ResultSet rs = st.executeQuery()) {
+			
+			while (rs.next()) {
+				
+				int c = rs.getInt(1);
+				
+				
+				return c;
+			}
+			return 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	
+	public List<Integer> getBestSelling() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT product_id, COUNT(*) AS total_sold FROM orderdetail WHERE status = 2 GROUP BY product_id ORDER BY total_sold DESC limit 5;");
+				ResultSet rs = st.executeQuery()) {
+			List<Integer> list = new ArrayList<>();
+			while (rs.next()) {
+				
+				
+				int c = rs.getInt("product_id");
+				
+				list.add(c);
+				
+			}
+			return list;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 }

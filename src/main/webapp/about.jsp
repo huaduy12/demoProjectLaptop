@@ -48,6 +48,13 @@
 	.cart-btns{
 		display: flex
 		}
+		
+     
+.text-black-50{
+   color: #000 !important;
+  text-align: justify !important;
+  text-justify: inter-word;
+}
     
 </style>
   
@@ -67,7 +74,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li><a href="store.jsp">Cửa hàng</a></li>
+            <li><a href="store">Cửa hàng</a></li>
             <li class="active"><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -84,39 +91,43 @@
       <div class="container">
         <div class="row text-left mb-5">
           <div class="col-12">
-            <h2 class="font-weight-bold heading text-primary mb-4">About Us</h2>
+            <h2 class="font-weight-bold heading text-primary mb-4">Giới thiệu</h2>
           </div>
           <div class="col-lg-6">
             <p class="text-black-50">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-              enim pariatur similique debitis vel nisi qui reprehenderit totam?
-              Quod maiores.
+            Chào mừng bạn đến với website bán laptop của chúng tôi!
             </p>
             <p class="text-black-50">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-              saepe, explicabo nihil. Est, autem error cumque ipsum repellendus
-              veniam sed blanditiis unde ullam maxime veritatis perferendis
-              cupiditate, at non esse!
+             Chúng tôi tự hào là địa điểm mua sắm trực tuyến lý tưởng dành cho những người đam mê công nghệ và đang tìm kiếm chiếc laptop hoàn hảo.
+              Với một đội ngũ chuyên nghiệp và tận tâm, chúng tôi cam kết cung cấp cho bạn những sản phẩm laptop chất lượng, 
+             đa dạng về thương hiệu, kiểu dáng và cấu hình, đáp ứng mọi nhu cầu và sở thích cá nhân.
             </p>
             <p class="text-black-50">
-              Enim, nisi labore exercitationem facere cupiditate nobis quod
-              autem veritatis quis minima expedita. Cumque odio illo iusto
-              reiciendis, labore impedit omnis, nihil aut atque, facilis
-              necessitatibus asperiores porro qui nam.
+             Tại website của chúng tôi, bạn sẽ được khám phá một bộ sưu tập đa dạng các dòng laptop từ các thương hiệu
+              hàng đầu trên thế giới như Apple, Dell, HP, Asus, Lenovo và nhiều hãng nổi tiếng khác. Từ những chiếc laptop siêu mỏng và nhẹ, phù hợp với người dùng di chuyển nhiều, 
+             đến những máy tính xách tay mạnh mẽ, đáp ứng tối đa nhu cầu làm việc và giải trí của bạn.
             </p>
           </div>
           <div class="col-lg-6">
             <p class="text-black-50">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-              saepe, explicabo nihil. Est, autem error cumque ipsum repellendus
-              veniam sed blanditiis unde ullam maxime veritatis perferendis
-              cupiditate, at non esse!
+            Chúng tôi luôn cập nhật những xu hướng công nghệ mới nhất, giúp bạn tiếp 
+            cận những tính năng tiên tiến và hiệu suất vượt trội. Ngoài ra, chúng tôi cũng cung cấp những chương
+             trình khuyến mãi hấp dẫn và dịch vụ chăm sóc khách hàng tận tâm,
+             giúp bạn có trải nghiệm mua sắm trực tuyến đáng nhớ và thoải mái nhất.
             </p>
             <p class="text-black-50">
-              Enim, nisi labore exercitationem facere cupiditate nobis quod
-              autem veritatis quis minima expedita. Cumque odio illo iusto
-              reiciendis, labore impedit omnis, nihil aut atque, facilis
-              necessitatibus asperiores porro qui nam.
+              Hãy để chúng tôi trở thành người bạn đồng hành đáng tin cậy trên hành trình tìm kiếm chiếc 
+              laptop hoàn hảo cho bạn. Dù bạn là một doanh nhân chuyên nghiệp, một sinh viên năng động hay một người yêu công nghệ, 
+              chúng tôi sẵn sàng đáp ứng mọi yêu cầu và đem đến cho bạn những trải nghiệm vượt trội.
+            </p>
+            
+             <p class="text-black-50">
+             Hãy trải nghiệm ngay và khám phá các sản phẩm tuyệt vời tại website của chúng tôi.
+              Chúng tôi cam kết mang đến cho bạn sự hài lòng và niềm vui mua sắm tuyệt vời nhất!
+            </p>
+            
+             <p class="text-black-50">
+            Cảm ơn bạn đã lựa chọn chúng tôi!
             </p>
           </div>
         </div>
@@ -137,10 +148,9 @@
                 <span class="icon-home2"><i class="fa fa-home" aria-hidden="true"></i></span>
               </span>
               <div class="feature-text">
-                <h3 class="heading">Quality properties</h3>
+                <h3 class="heading">Về chất lượng sản phẩm</h3>
                 <p class="text-black-50">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nostrum iste.
+                  Chúng tôi luôn ưu tiên chất lượng sản phẩm lên hàng đầu với những dịch vụ tốt nhất dành cho khách hàng
                 </p>
               </div>
             </div>
@@ -150,10 +160,9 @@
                 <span class="icon-person"><i class="fa fa-user" aria-hidden="true"></i></span>
               </span>
               <div class="feature-text">
-                <h3 class="heading">Top rated agents</h3>
+                <h3 class="heading">Về khách hàng</h3>
                 <p class="text-black-50">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nostrum iste.
+                  Luôn dành mọi ưu đãi tốt nhất và phục vụ tốt nhất dành cho khách hàng khi tới trải nghiệm tại website của chúng tôi.
                 </p>
               </div>
             </div>
@@ -163,10 +172,9 @@
                 <span class="icon-security"><i class="fa fa-laptop" aria-hidden="true"></i></span>
               </span>
               <div class="feature-text">
-                <h3 class="heading">Easy and safe</h3>
+                <h3 class="heading">Dễ sử dụng và an toàn</h3>
                 <p class="text-black-50">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nostrum iste.
+                  Chúng tôi cam kết bảo đảm an toàn tuyệt đối cho các thông tin của khách hàng khi hoạt động trên website của chúng tôi.
                 </p>
               </div>
             </div>
@@ -199,7 +207,7 @@
               <span class="number"
                 ><span class="countup text-primary">2917</span></span
               >
-              <span class="caption text-black-50"># of Buy Properties</span>
+              <span class="caption text-black-50"> Lượt khách hàng truy cập mỗi ngày</span>
             </div>
           </div>
           <div
@@ -211,7 +219,7 @@
               <span class="number"
                 ><span class="countup text-primary">3918</span></span
               >
-              <span class="caption text-black-50"># of Sell Properties</span>
+              <span class="caption text-black-50">Lượt sản phẩm đang được giảm giá</span>
             </div>
           </div>
           <div
@@ -223,7 +231,7 @@
               <span class="number"
                 ><span class="countup text-primary">38928</span></span
               >
-              <span class="caption text-black-50"># of All Properties</span>
+              <span class="caption text-black-50">Sản phẩm đang được bán</span>
             </div>
           </div>
           <div
@@ -235,7 +243,7 @@
               <span class="number"
                 ><span class="countup text-primary">1291</span></span
               >
-              <span class="caption text-black-50"># of Agents</span>
+              <span class="caption text-black-50"> Đại lý đang hợp tác</span>
             </div>
           </div>
         </div>

@@ -67,15 +67,25 @@ public class loginServlet extends HttpServlet {
 		User user = userDao.getUserByEmailAndPassword(email, password);
 		HttpSession session = request.getSession();
 		
+		
+		User userAdmin = userDao.getUserByEmailAndPasswordAdmin(email, password);
+		
+		
 		if(user != null) {
 			session.setAttribute("user", user);
 			session.setMaxInactiveInterval(60*60*24); // hạn 1 ngày
 			response.sendRedirect("index.jsp");
+		} else if (userAdmin != null) {
+			session.setAttribute("userAdmin", userAdmin);
+			session.setMaxInactiveInterval(60*60*24); // hạn 1 ngày
+			response.sendRedirect("indexAdmin.jsp");
 		}
 		else {
 			request.setAttribute("email", email);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
+		
+		
 		
 		
 	}

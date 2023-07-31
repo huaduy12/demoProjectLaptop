@@ -640,6 +640,7 @@ textarea.input {
   font-weight: 700;
   -webkit-transition: 0.2s all;
   transition: 0.2s all;
+  
 }
 
 .cart-dropdown .cart-btns > a:first-child {

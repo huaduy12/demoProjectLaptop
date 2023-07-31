@@ -112,6 +112,21 @@
       
     </div>
   </div>
+  
+  
+    <div class="modal fade" id="modalConcact" role="dialog" style="background-color: transparent;">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" style="background-color: green; ">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="color:white;"><i class="fa fa-check-square-o" aria-hidden="true"></i> Liên hệ thành công</h4>
+        </div>    
+      </div>
+      
+    </div>
+  </div>
     
     <!-- NAVIGATION -->
     <nav id="navigation">
@@ -122,7 +137,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li class="active"><a href="index.jsp">Trang chủ</a></li>
-            <li><a href="store.jsp">Cửa hàng</a></li>
+            <li><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -643,6 +658,8 @@
     </div>
     <!-- /HOT DEAL SECTION -->
 
+
+
     <!-- SECTION -->
     <div class="section">
       <!-- container -->
@@ -958,6 +975,23 @@ $(document).ready(function() {
         $('#modalSeccess').modal('hide');
       }, 1000);
     <% session.removeAttribute("seccess"); // Xóa thông báo sau khi hiển thị
+     } %>
+});
+</script>
+
+
+ <script>
+$(document).ready(function() {
+  // Kiểm tra nếu có thông báo trong session
+  <% String successConcact = (String) session.getAttribute("successConcact");
+     if (successConcact != null) { %>
+    // Hiển thị modal khi tài liệu đã tải xong
+    $('#modalConcact').modal('show');
+    <%session.removeAttribute("successConcact"); %>
+    setTimeout(function() {
+        $('#modalConcact').modal('hide');
+      }, 1000);
+    <% session.removeAttribute("successConcact"); // Xóa thông báo sau khi hiển thị
      } %>
 });
 </script>

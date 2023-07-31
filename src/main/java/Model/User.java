@@ -37,6 +37,19 @@ public class User {
 		this.role_id = role_id;
 		this.status = status;
 	}
+	
+	public User( String username, String fullname, String email, String phonenumber, String address,
+			String password, int role_id) {
+		super();
+		this.username = username;
+		this.fullname = fullname;
+		this.email = email;
+		this.phonenumber = phonenumber;
+		this.address = address;
+		this.password = password;
+		this.role_id = role_id;
+		
+	}
 	public User( String username, String email,
 			String password) {
 		super();

@@ -24,6 +24,23 @@ margin-right: 15px !important;
 select{
      color:black;
     }
+    
+.cart-dropdown .cart-btns button {
+  display: inline-block;
+  width: calc(50% - 0px);
+  padding: 12px;
+  background-color: #d10024;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+  border: none;
+}
+
+.cart-dropdown .cart-btns button:hover {
+  opacity: 0.8;
+}
 </style>
 
 </head>
@@ -72,7 +89,7 @@ select{
             <div class="col-md-3">
               <div class="header-logo">
                 <a href="index.jsp" class="logo">
-                  <img src="./img/logo.png" alt="" />
+                  <img src="./img/logo.png" alt="" style="font-weight: bold;"/>
                 </a>
               </div>
             </div>
@@ -81,8 +98,8 @@ select{
             <!-- SEARCH BAR -->
             <div class="col-md-6">
               <div class="header-search">
-                <form>
-                  <select class="input-select" value = "">
+                <form method="get" action="searchHeraderServlet">
+                  <select class="input-select" value = "" name = "cate_id">
                     <option value="0">Tất cả</option>
                     <%
                     	List<Category> categories = productDao.getListCategorys();
@@ -93,8 +110,8 @@ select{
                     %>
                     
                   </select>
-                  <input class="input" placeholder="Nhập tên laptop" />
-                  <button class="search-btn">Tìm kiếm</button>
+                  <input class="input" placeholder="Nhập tên laptop" name = "namelaptop"/>
+                  <button type="submit" class="search-btn">Tìm kiếm</button>
                 </form>
               </div>
             </div>
@@ -188,9 +205,12 @@ select{
                     </div>
                     <div class="cart-btns">
                       <a href="cart.jsp">Xem giỏ hàng</a>
-                      <a href="checkout.jsp"
+                      <form action="checkQuantityBuy" method="post" style="display: inline;">
+                           <button type="submit"
                         >Thanh toán <i class="fa fa-arrow-circle-right"></i
-                      ></a>
+                      ></button>
+                      </form>
+                     
                     </div>
                   </div>
                 </div>

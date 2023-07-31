@@ -54,7 +54,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li ><a href="store.jsp">Cửa hàng</a></li>
+            <li ><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -74,7 +74,7 @@
         <div class="row">
           <div class="col-md-12">
             <ul class="breadcrumb-tree">
-              <li><a href="#">Trang chủ</a></li>
+              <li><a href="index.jsp">Trang chủ</a></li>
               <li class="active">Danh sách sản phẩm yêu thích</li>
             </ul>
           </div>

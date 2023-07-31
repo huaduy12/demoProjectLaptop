@@ -55,7 +55,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li><a href="store.jsp">Cửa hàng</a></li>
+            <li><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -85,6 +85,13 @@
           </div>
           <div class="col-lg-6">
             <div class="login_form_inner">
+               <c:if test="${success != null}">
+                    <h3 style="color: red;">Chúc mừng bạn thay đổi mật khẩu thành công</h3>
+               </c:if>
+                <c:if test="${fail != null}">
+                    <h3 style="color: red;">Thay đổi mật khẩu thất bại</h3>
+               </c:if>
+               
               <h3>Đăng nhập</h3>
               <form class="row login_form" action="loginServlet" id="formlogin" method="post">
                 <div class="col-md-12 form-group">
@@ -150,7 +157,7 @@
                   >
                     Đăng nhập
                   </button>
-                  <a href="#">Quên mật khẩu?</a>
+                  <a href="forgotPassword.jsp">Quên mật khẩu?</a>
                 </div>
              </form>
              

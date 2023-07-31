@@ -18,23 +18,22 @@
           <div class="row">
             <div class="col-md-3 col-xs-6">
               <div class="footer">
-                <h3 class="footer-title">About Us</h3>
+                <h3 class="footer-title">Giới thiệu</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut.
+                  Là website bán laptop uy tín nhất thị trường Việt Nam hiện nay
                 </p>
                 <ul class="footer-links">
                   <li>
                     <a href="#"
-                      ><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a
+                      ><i class="fa fa-map-marker"></i>86 Minh Khai, Bắc Từ Liêm, Hà Nội</a
                     >
                   </li>
                   <li>
-                    <a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a>
+                    <a href="#"><i class="fa fa-phone"></i>+088885555</a>
                   </li>
                   <li>
                     <a href="#"
-                      ><i class="fa fa-envelope-o"></i>email@email.com</a
+                      ><i class="fa fa-envelope-o"></i>huaduy2k2@gmail.com</a
                     >
                   </li>
                 </ul>
@@ -43,13 +42,13 @@
 
             <div class="col-md-3 col-xs-6">
               <div class="footer">
-                <h3 class="footer-title">Categories</h3>
+                <h3 class="footer-title">Hỗ trợ khách hàng</h3>
                 <ul class="footer-links">
-                  <li><a href="#">Hot deals</a></li>
-                  <li><a href="#">Laptops</a></li>
-                  <li><a href="#">Smartphones</a></li>
-                  <li><a href="#">Cameras</a></li>
-                  <li><a href="#">Accessories</a></li>
+                  <li><a href="#">Hướng dẫn mua hàng trực tuyến</a></li>
+                  <li><a href="#">Hướng dẫn thanh toán</a></li>
+                  <li><a href="#">Gửi yêu cầu bảo hành</a></li>
+                  <li><a href="#">Góp ý, khiếu nại</a></li>
+                  
                 </ul>
               </div>
             </div>
@@ -58,26 +57,24 @@
 
             <div class="col-md-3 col-xs-6">
               <div class="footer">
-                <h3 class="footer-title">Information</h3>
+                <h3 class="footer-title">Chính sách chung</h3>
                 <ul class="footer-links">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Contact Us</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Orders and Returns</a></li>
-                  <li><a href="#">Terms & Conditions</a></li>
+                  <li><a href="#">Chính sách, quy định chung</a></li>
+                  <li><a href="#">Chính sách bảo hành</a></li>
+                  <li><a href="#">Chính sách đổi trả hàng</a></li>
+                 
                 </ul>
               </div>
             </div>
 
             <div class="col-md-3 col-xs-6">
               <div class="footer">
-                <h3 class="footer-title">Service</h3>
+                <h3 class="footer-title">Thông tin khuyến mại</h3>
                 <ul class="footer-links">
-                  <li><a href="#">My Account</a></li>
-                  <li><a href="#">View Cart</a></li>
-                  <li><a href="#">Wishlist</a></li>
-                  <li><a href="#">Track My Order</a></li>
-                  <li><a href="#">Help</a></li>
+                  <li><a href="#">Sản phẩm khuyến mãi</a></li>
+                  <li><a href="#">Sản phẩm bán chạy</a></li>
+                  <li><a href="#">Thông tin hàng khuyến mại</a></li>
+                  
                 </ul>
               </div>
             </div>

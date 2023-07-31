@@ -62,7 +62,7 @@
           <!-- NAV -->
           <ul class="main-nav nav navbar-nav">
             <li ><a href="index.jsp">Trang chủ</a></li>
-            <li><a href="store.jsp">Cửa hàng</a></li>
+            <li><a href="store">Cửa hàng</a></li>
             <li><a href="about.jsp">Giới thiệu</a></li>
             <li><a href="contact.jsp">Liên hệ</a></li>
           </ul>
@@ -209,12 +209,19 @@
                 <h5 class="font-weight-bold">Tổng tiền: </h5>
                 <h5 class="font-weight-bold"><%=new java.text.DecimalFormat("#,###").format(total)%></h5>
               </div>
+              
+             <c:if test="${failBuy != null}">
+                     <p style="color: red;">${failBuy}</p>
+             </c:if>
+             <form action="checkQuantityBuy" method="post">
               <button
                 class="btn btn-block btn-primary my-3 py-3"
-                onclick="window.location.href='checkout.jsp';"
+                
               >
                 Thanh toán
               </button>
+             </form>
+             
             </div>
           </div>
         </div>

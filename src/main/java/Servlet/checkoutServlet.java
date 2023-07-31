@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Dao.orderDao;
+import Dao.productDao;
 import Model.Order;
 import Model.Orderdetail;
 import Model.User;
@@ -44,7 +45,7 @@ public class checkoutServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		orderDao orderDao = new orderDao();
-		
+		productDao productDao = new productDao();
 
 		String useridString = request.getParameter("user_id");
 		String orderString = request.getParameter("order_id");
@@ -70,6 +71,7 @@ public class checkoutServlet extends HttpServlet {
       		
         for (Orderdetail orderdetail : orderdetails) {
 			orderDao.updateStatusOrderdetail(orderdetail.getId(), 1);
+			productDao.updateQuantity(orderdetail.getProduct_id(),orderdetail.getQuantity());
 		}
       	
 		HttpSession session = request.getSession();
