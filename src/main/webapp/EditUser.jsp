@@ -174,7 +174,7 @@
       <li><a class="app-menu__item " href="indexAdmin.jsp"><i class='app-menu__icon bx bx-tachometer'></i><span
             class="app-menu__label">Bảng điều khiển</span></a></li>
       <li><a class="app-menu__item active" href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i>
-          <span class="app-menu__label">Quản lý khách hàng</span></a></li>
+          <span class="app-menu__label">Quản lý người dùng</span></a></li>
           
       <li><a class="app-menu__item" href="ManageProduct"><i
             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
@@ -220,32 +220,45 @@
              
             </div>
             <c:if test="${user != null}">
+             
+              <c:if test="${errorEmail != null}">
+                  <p style="color:red;">${errorEmail} </p>
+              </c:if>
+              
+               <c:if test="${errorPhone != null}">
+                  <p style="color:red;">${errorPhone} </p>
+              </c:if>
            
+               
               <form class="row" action="EditUser" method="post">
                <input type="hidden" name ="iduser" value="${user.id}">
+               <input type="hidden" name ="Oemail" value="${user.email}">
+               <input type="hidden" name ="Ophone" value="${user.phonenumber}">
+               
+               
               <div class="form-group col-md-4">
                 <label class="control-label">Tên tài khoản</label>
-                <input class="form-control" type="text" id="username" name ="username" value="${user.username}"required>
+                <input class="form-control" type="text" id="usernameEdit" name ="username" value="${user.username}"required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Họ và tên</label>
-                <input class="form-control" type="text" id="fullname" name ="fullname" value="${user.fullname}"required>
+                <input class="form-control" type="text" id="fullnameEdit" name ="fullname" value="${user.fullname}"required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Email</label>
-                <input class="form-control" type="text" id="email" name ="email" value="${user.email}"required>
+                <input class="form-control" type="text" id="emailEdit" name ="email" value="${user.email}"required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Điện thoại</label>
-                <input class="form-control" type="text" id="phonenumber" name ="phonenumber" value="${user.phonenumber}"required>
+                <input class="form-control" type="text" id="phonenumberEdit" name ="phonenumber" value="${user.phonenumber}" pattern="[0-9]{10}" required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Địa chỉ</label>
-                <input class="form-control" type="text"  id="address" name ="address" value="${user.address}"required>
+                <input class="form-control" type="text"  id="addressEdit" name ="address" value="${user.address}"required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Mật khẩu</label>
-                <input class="form-control" type="text"  id="password" name ="password" value="${user.password}"required>
+                <input class="form-control" type="text"  id="passwordEdit" name ="password" value="${user.password}"required>
               </div>
               
             
@@ -255,19 +268,20 @@
          <button  class="btn btn-cancel" type="button" onclick="window.location.href = 'ManageEmployee'">Hủy bỏ</button>
          </c:if>
           
-          
-          <c:if test="${user == null}">
-          <h3 class="tile-title">Tạo mới người dùng</h3>
-        </c:if>  
-        
-       
-        
+ 
           <div class="tile-body">
             <div class="row element-button">
              
             </div>
             <c:if test="${user == null}">
-           
+              <c:if test="${failEmail != null}">
+                  <p style="color:red;">${failEmail} </p>
+              </c:if>
+              
+               <c:if test="${failPhone != null}">
+                  <p style="color:red;">${failPhone} </p>
+              </c:if>
+              
               <form class="row" action="AddUser" method="post">
                
               <div class="form-group col-md-4">
@@ -280,11 +294,11 @@
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Email</label>
-                <input class="form-control" type="text" id="email" name ="email" value=""required>
+                <input class="form-control" type="email" id="email" name ="email" value=""required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Điện thoại</label>
-                <input class="form-control" type="text" id="phonenumber" name ="phonenumber" value=""required>
+                <input class="form-control" type="text" id="phonenumber" name ="phonenumber" value="" pattern="[0-9]{10}" required>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Địa chỉ</label>
@@ -292,7 +306,7 @@
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Mật khẩu</label>
-                <input class="form-control" type="text"  id="password" name ="password" value=""required>
+                <input class="form-control" type="password"  id="password" name ="password" value="" pattern="[A-Za-z\d!@#$%^&*()_+~\|}{[]\:;'<>,.?/]{3,}" required>
               </div>
               
                <div class="form-group col-md-4">

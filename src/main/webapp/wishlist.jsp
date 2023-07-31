@@ -114,7 +114,7 @@
               <div class="col-md-3 col-xs-6">
                 <div class="product">
                   <div class="product-img">
-                    <img src="./img/product01.png" alt="" />
+                    <img src="<%=product.getThumbnail()%>" alt="" />
                     <div class="product-label">
                       
                       <span class="new">NEW</span>

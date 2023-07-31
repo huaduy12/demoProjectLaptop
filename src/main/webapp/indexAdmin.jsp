@@ -1,3 +1,4 @@
+<%@page import="Model.SalesStatistics"%>
 <%@page import="Model.Orderdetail"%>
 <%@page import="Dao.userDao"%>
 <%@page import="Model.User"%>
@@ -77,7 +78,7 @@
       <li><a class="app-menu__item active" href="index.jsp"><i class='app-menu__icon bx bx-tachometer'></i><span
             class="app-menu__label">Bảng điều khiển</span></a></li>
       <li><a class="app-menu__item " href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý khách hàng</span></a></li>
+            class="app-menu__label">Quản lý người dùng</span></a></li>
     
       <li><a class="app-menu__item" href="ManageProduct"><i
             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
@@ -252,7 +253,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="tile">
-              <h3 class="tile-title">Dữ liệu 6 tháng đầu vào</h3>
+              <h3 class="tile-title">Số lượng sản phẩm bán được trong 6 tháng gần nhất</h3>
               <div class="embed-responsive embed-responsive-16by9">
                 <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
               </div>
@@ -260,7 +261,7 @@
           </div>
           <div class="col-md-12">
             <div class="tile">
-              <h3 class="tile-title">Thống kê 6 tháng doanh thu</h3>
+              <h3 class="tile-title">Thống kê doanh thu 6 tháng gần nhất </h3>
               <div class="embed-responsive embed-responsive-16by9">
                 <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
               </div>
@@ -295,8 +296,17 @@
   <script type="text/javascript" src="js/plugins/chart.js"></script>
   <!--===============================================================================================-->
   <script type="text/javascript">
+  <% int[] month = new int[6];
+	int[] soldData = new int[6];
+  List<SalesStatistics> statisticsList = orderDao.getListSales();
+  for (int i = 0; i < statisticsList.size(); i++) {
+	  SalesStatistics statistics = statisticsList.get(i);
+	  month[i] = statistics.getOrderMonth();
+	  soldData[i] = statistics.getTotalSold();
+  }
+  %>
     var data = {
-      labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"],
+      labels: ["Tháng <%=month[0]%>", "Tháng <%=month[1]%>", "Tháng <%=month[2]%>", "Tháng <%=month[3]%>", "Tháng <%=month[4]%>", "Tháng <%=month[5]%>"],
       datasets: [{
         label: "Dữ liệu đầu tiên",
         fillColor: "rgba(255, 213, 59, 0.767), 212, 59)",
@@ -305,25 +315,40 @@
         pointStrokeColor: "rgb(255, 212, 59)",
         pointHighlightFill: "rgb(255, 212, 59)",
         pointHighlightStroke: "rgb(255, 212, 59)",
-        data: [20, 59, 90, 51, 56, 100]
-      },
-      {
-        label: "Dữ liệu kế tiếp",
-        fillColor: "rgba(9, 109, 239, 0.651)  ",
-        pointColor: "rgb(9, 109, 239)",
-        strokeColor: "rgb(9, 109, 239)",
-        pointStrokeColor: "rgb(9, 109, 239)",
-        pointHighlightFill: "rgb(9, 109, 239)",
-        pointHighlightStroke: "rgb(9, 109, 239)",
-        data: [48, 48, 49, 39, 86, 10]
+        data: [<%= soldData[0] %>, <%= soldData[1] %>, <%= soldData[2] %>, <%= soldData[3] %>, <%= soldData[4] %>, <%= soldData[5] %>]
       }
       ]
     };
+    
+    <% int[] mont = new int[6];
+	int[] sum = new int[6];
+  List<SalesStatistics> statisticsListSum = orderDao.getListSumSales();
+  for (int i = 0; i < statisticsListSum.size(); i++) {
+	  SalesStatistics statistics = statisticsListSum.get(i);
+	  mont[i] = statistics.getOrderMonth();
+	  sum[i] = statistics.getTotalSold();
+  }
+  %>
+  
+    var data1 = {
+    	      labels: ["Tháng <%=mont[0]%>", "Tháng <%=mont[1]%>", "Tháng <%=mont[2]%>", "Tháng <%=mont[3]%>", "Tháng <%=mont[4]%>", "Tháng <%=mont[5]%>"],
+    	      datasets: [{
+    	        label: "Dữ liệu đầu tiên",
+    	        fillColor: "rgba(9, 109, 239, 0.651)  ",
+    	        pointColor: "rgb(9, 109, 239)",
+    	        strokeColor: "rgb(9, 109, 239)",
+    	        pointStrokeColor: "rgb(9, 109, 239)",
+    	        pointHighlightFill: "rgb(9, 109, 239)",
+    	        pointHighlightStroke: "rgb(9, 109, 239)",
+    	        data: [<%=sum[0]%>, <%=sum[1]%>, <%=sum[2]%>, <%=sum[3]%>, <%=sum[4]%>, <%=sum[5]%>]
+    	      },  
+    	      ]
+    	    };
     var ctxl = $("#lineChartDemo").get(0).getContext("2d");
     var lineChart = new Chart(ctxl).Line(data);
 
     var ctxb = $("#barChartDemo").get(0).getContext("2d");
-    var barChart = new Chart(ctxb).Bar(data);
+    var barChart = new Chart(ctxb).Bar(data1);
   </script>
   <script type="text/javascript">
     //Thời Gian

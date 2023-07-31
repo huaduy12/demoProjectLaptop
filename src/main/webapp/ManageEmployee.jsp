@@ -74,7 +74,7 @@
       <li><a class="app-menu__item " href="indexAdmin.jsp"><i class='app-menu__icon bx bx-tachometer'></i><span
             class="app-menu__label">Bảng điều khiển</span></a></li>
       <li><a class="app-menu__item active" href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i>
-          <span class="app-menu__label">Quản lý khách hàng</span></a></li>
+          <span class="app-menu__label">Quản lý người dùng</span></a></li>
           
       <li><a class="app-menu__item" href="ManageProduct"><i
             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
@@ -107,7 +107,7 @@
               <div class="col-sm-2">
 
                 <a class="btn btn-add btn-sm" href="EditUser.jsp" title="Thêm"><i class="fas fa-plus"></i>
-                  Tạo mới nhân viên</a>
+                  Tạo mới người dùng</a>
               </div>
             
               <div class="col-sm-2">
@@ -126,8 +126,8 @@
                   <th >Họ và tên</th>
                   <th >Email</th>
                   <th>Số điện thoại</th>
-                  <th width="250">Địa chỉ</th>
-                 
+                  <th width="200">Địa chỉ</th>
+                  <th>Vị trí </th>
                   <th >Tính năng</th>
                 </tr>
               </thead>
@@ -143,6 +143,13 @@
                                     <td>${o.email}</td>
                                     <td>${o.phonenumber }</td>
                                     <td>${o.address}</td>
+                                    <c:if test="${o.role_id ==1 }">
+                                        <td>Quản trị viên</td>
+                                    </c:if>
+                                     <c:if test="${o.role_id ==2 }">
+                                        <td>Khách hàng</td>
+                                    </c:if>
+                                    
                                     <td style ="display:flex">
                                     
                                    <form action="deleteUser" method= "post" >

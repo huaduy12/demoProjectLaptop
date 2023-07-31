@@ -174,7 +174,7 @@
       <li><a class="app-menu__item " href="indexAdmin.jsp"><i class='app-menu__icon bx bx-tachometer'></i><span
             class="app-menu__label">Bảng điều khiển</span></a></li>
       <li><a class="app-menu__item active" href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i>
-          <span class="app-menu__label">Quản lý khách hàng</span></a></li>
+          <span class="app-menu__label">Quản lý người dùng</span></a></li>
           
       <li><a class="app-menu__item" href="ManageProduct"><i
             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>

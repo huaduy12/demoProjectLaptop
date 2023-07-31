@@ -11,6 +11,7 @@ import Connection.ConnectionUtil;
 
 import Model.Order;
 import Model.Orderdetail;
+import Model.SalesStatistics;
 
 public class orderDao {
 	
@@ -27,6 +28,63 @@ public class orderDao {
 				
 				Order order = new Order(id,total,user_id);
 				result.add(order);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
+	
+	public List<SalesStatistics> getListSales() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT MONTH(o.orderdate) AS order_month, COUNT(*) AS total_sold FROM `order` o\r\n"
+						+ "INNER JOIN orderdetail od ON o.id = od.order_id\r\n"
+						+ "WHERE od.status = 2\r\n"
+						+ "  AND o.orderdate >= DATE_SUB(NOW(), INTERVAL 6 MONTH)\r\n"
+						+ "GROUP BY\r\n"
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate)\r\n"
+						+ "ORDER BY\r\n"
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate);\r\n"
+						+ "");
+				ResultSet rs = st.executeQuery()) {
+			List<SalesStatistics> result = new ArrayList<>();
+			while (rs.next()) {
+				int month = rs.getInt("order_month");
+				int quantity = rs.getInt("total_sold");
+				
+				SalesStatistics salesStatistics = new SalesStatistics(month,quantity);
+				result.add(salesStatistics);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
+	
+	public List<SalesStatistics> getListSumSales() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT MONTH(o.orderdate) AS order_month, sum(od.total) AS total_sold FROM `order` o\r\n"
+						+ "INNER JOIN orderdetail od ON o.id = od.order_id\r\n"
+						+ "WHERE od.status = 2\r\n"
+						+ "  AND o.orderdate >= DATE_SUB(NOW(), INTERVAL 6 MONTH)\r\n"
+						+ "GROUP BY\r\n"
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate)\r\n"
+						+ "ORDER BY\r\n"
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate);");
+				ResultSet rs = st.executeQuery()) {
+			List<SalesStatistics> result = new ArrayList<>();
+			while (rs.next()) {
+				int month = rs.getInt("order_month");
+				int quantity = rs.getInt("total_sold");
+				
+				SalesStatistics salesStatistics = new SalesStatistics(month,quantity);
+				result.add(salesStatistics);
 			}
 			return result;
 		} catch (Exception e) {

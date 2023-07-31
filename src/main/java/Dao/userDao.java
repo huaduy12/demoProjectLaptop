@@ -46,7 +46,7 @@ public class userDao {
 	public List<User> getListUsersByStatus() {
 		try (Connection connection = ConnectionUtil.getConnection();
 
-				PreparedStatement st = connection.prepareStatement("SELECT * FROM user where role_id =2 and status = 1 order by id desc;");
+				PreparedStatement st = connection.prepareStatement("SELECT * FROM user where status = 1 order by id desc;");
 				ResultSet rs = st.executeQuery()) {
 			List<User> result = new ArrayList<>();
 			while (rs.next()) {
@@ -271,8 +271,8 @@ public class userDao {
 			PreparedStatement stt = conn.prepareStatement("insert into user(username,fullname,email,phonenumber,address,password,role_id) values(?,?,?,?,?,?,?);");
 		) {
 			stt.setString(1, user.getUsername());
-			stt.setString(2, user.getEmail());
-			stt.setString(3, user.getPassword());
+			stt.setString(2, user.getFullname());
+			stt.setString(3, user.getEmail());
 			stt.setString(4, user.getPhonenumber());
 			stt.setString(5, user.getAddress());
 			stt.setString(6, user.getPassword());

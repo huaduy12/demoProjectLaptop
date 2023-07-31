@@ -46,7 +46,7 @@ public class changePasswordServlet extends HttpServlet {
 		
 		User user1 =(User) session.getAttribute("user");
 		
-		if(userDao.changePassword(user1.getId(), passwordNew) > 0 && passwordOrigin.equals(user1.getPassword().trim())) {
+		if(userDao.changePassword(user1.getId(), passwordNew) > 0 && passwordOrigin.equals(user1.getPassword())) {
 			User user = new User(user1.getId(), user1.getUsername(), user1.getFullname(),user1.getEmail(),user1.getPhonenumber(),user1.getAddress(),passwordNew);
 			session.setAttribute("user", user);
 			request.setAttribute("changeSusscess", "Thay đổi mật khẩu thành công");

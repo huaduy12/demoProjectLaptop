@@ -48,12 +48,23 @@ public class AddUser extends HttpServlet {
 		String password = request.getParameter("password");
 		int role = Integer.parseInt(request.getParameter("role"));
 		
-		
-		User user = new User(username,fullname,email,phonnumber,address,password,role);
-		
 		userDao userDao = new userDao();
-		userDao.addUserByAdmin(user);
-		response.sendRedirect("ManageEmployee");
+		User user = new User(username,fullname,email,phonnumber,address,password,role);
+		User emailUser = userDao.getUserByEmail(user.getEmail());
+		User phoneUser = userDao.getUserByPhone(user.getPhonenumber());
+		
+		if(emailUser != null) {
+			request.setAttribute("failEmail", "Email đã tồn tại. Vui lòng nhập email khác");
+			request.getRequestDispatcher("EditUser").forward(request, response);
+		}else if (phoneUser != null) {
+			request.setAttribute("failPhone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác");
+			request.getRequestDispatcher("EditUser").forward(request, response);
+		}else {
+			userDao.addUserByAdmin(user);
+			response.sendRedirect("ManageEmployee");
+		}
+		
+		
 	}
 
 }

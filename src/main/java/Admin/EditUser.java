@@ -1,6 +1,8 @@
 package Admin;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import Dao.userDao;
 import Model.User;
+
 
 /**
  * Servlet implementation class EditUser
@@ -61,6 +64,8 @@ public class EditUser extends HttpServlet {
 		String address = request.getParameter("address");
 		String password = request.getParameter("password");
 		
+		String Oemail = request.getParameter("Oemail");
+		String Ophone = request.getParameter("Ophone");
 		int id = -1;
 		if(idString != null) {
 			id = Integer.parseInt(idString);
@@ -69,8 +74,37 @@ public class EditUser extends HttpServlet {
 		User user = new User(id,username,fullname,email,phonnumber,address,password);
 		
 		userDao userDao = new userDao();
-		userDao.updateInfor(user);
-		response.sendRedirect("ManageEmployee");
+		User user3 = userDao.getUserById(id);
+		
+		
+		List<User> users = userDao.getListUsers();
+		int cnt1 =0,cnt2 = 0;
+		for (User user2 : users) {
+			if(user2.getEmail().equalsIgnoreCase(email)) {
+				cnt1++;
+			}
+			if( user2.getPhonenumber()!= null && user2.getPhonenumber().equalsIgnoreCase(phonnumber)) {
+				cnt2++;
+			}
+		}
+		
+		if(cnt1 > 0 && !email.equals(Oemail)) {
+			request.setAttribute("errorEmail","Email bị trùng, Vui lòng nhập email khác");
+			request.setAttribute("user", user3);
+			request.getRequestDispatcher("EditUser.jsp").forward(request, response);
+		}else if(cnt2 > 0 && !phonnumber.equals(Ophone)) {
+			request.setAttribute("errorPhone","Số điện thoại bị trùng, Vui lòng nhập số điện thoại khác");
+			request.setAttribute("user", user3);
+			request.getRequestDispatcher("EditUser.jsp").forward(request, response);
+		}else {
+			userDao.updateInfor(user);
+			response.sendRedirect("ManageEmployee");
+		}
+		
+		
+		
+		
+		
 		
 		
 	}
