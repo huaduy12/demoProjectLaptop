@@ -225,7 +225,16 @@
                         <td><%=u.getId()%></td>
                         <td><%=u.getUsername()%></td>
                         <td><%=u.getEmail()%></td>
-                        <td><span class="tag tag-success"><%=u.getPhonenumber()%></span></td>
+                        
+                       
+                        
+                        <%if(u.getPhonenumber() == null){ %>
+                            <td><span class="tag tag-success">Không có</span></td>          
+                        <%} %>
+                        <%if(u.getPhonenumber() != null){ %>
+                            <td><span class="tag tag-success"><%=u.getPhonenumber()%></span></td>
+                        <%} %>
+                        
                       </tr>
                       <%} %>
                     </tbody>
