@@ -1,3 +1,6 @@
+<%@page import="Model.Item"%>
+<%@page import="Model.Cart"%>
+<%@page import="Dao.productDao"%>
 <%@page import="java.util.List"%>
 <%@page import="Model.Product"%>
 <%@page import="Model.Orderdetail"%>
@@ -12,7 +15,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>EShopper - Bootstrap Shop Template</title>
+    <title>Giỏ hàng</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Free HTML Templates" name="keywords" />
     <meta content="Free HTML Templates" name="description" />
@@ -178,6 +181,87 @@
             
               </tr>
               <%} 
+                     // nếu user = null, sử dụng cookie
+                    }else{
+                    	
+                    	productDao productDAO = new productDao();
+                    	
+        		    	Cookie[] cookies = request.getCookies();
+                    	List<Product> list = productDAO.getListProducts();
+                		String txt = "";
+                		
+                		if(cookies != null) {
+                			for (Cookie cookie : cookies) {
+                				if (cookie.getName().equals("cart")) {
+                					txt += cookie.getValue();
+                				}
+                			}
+                		}
+                	 
+                		Cart cart = new Cart(txt, list);
+                		 List<Item> items = cart.getItems();
+                		  for(Item it : items){ %>
+                		  
+                		  <tr>
+                <td class="align-middle" style="text-align: left;">
+                   <div class= row>
+                      <div class = "col-md-3">
+                        <img src="<%=it.getProduct().getThumbnail()%>" alt="" style="width: 70px" />
+                      </div>
+                      <div class = "col-md-9">
+                       <%=it.getProduct().getName()%>
+                      </div>
+                   </div>
+                
+                </td>
+                <td class="align-middle"><%=new java.text.DecimalFormat("#,###").format(it.getPrice())%></td>
+                <td class="align-middle">
+                  <div
+                    class="input-group quantity mx-auto"
+                    style="width: 100px"
+                  >
+                  <form action="process" method="post">
+                  <input type="hidden" name = "id" value="<%=it.getProduct().getId()%>">
+                  <input type="hidden" value="-1" name="num"> 
+                  <div class="input-group-btn">
+                      <button class="btn btn-sm btn-primary btn-minus" type="submit" name = "minus" value = "minus">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                  </form>
+                    
+                    <input
+                      type="text"
+                      class="form-control form-control-sm bg-secondary text-center inline-input"
+                      value="<%=it.getQuantity()%>" disabled="disabled"
+                    />
+                <form action="process" method="post">
+                  <input type="hidden" name = "id" value="<%=it.getProduct().getId()%>">
+                  <input type="hidden" value="1" name="num"> 
+                    <div class="input-group-btn">
+                      <button class="btn btn-sm btn-primary btn-plus" type="submit" name= "plus" value = "plus">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
+                </form>
+                  </div>
+                </td>
+                <td class="align-middle"><%=new java.text.DecimalFormat("#,###").format(it.getQuantity()*it.getPrice())%></td>
+                
+              
+                
+                <td class="align-middle">
+                  <form action="process" method="post">
+                   <input type="hidden" name = "id" value="<%=it.getProduct().getId()%>">
+                  <button class="btn btn-sm btn-primary" type="submit" name="remove" value = "remove" style="width: 42px">
+                    <i class="fa fa-times"></i>
+                  </button>
+                   </form>
+                </td>
+            
+              </tr>
+                		  
+                  <%}  	
                     }
               %>
              
@@ -193,9 +277,30 @@
               <div class="d-flex justify-content-between mb-3 pt-1">
                 <h6 class="font-weight-medium">Tổng:</h6>
                 
-                <% double total = 0.0;
+                <% productDao productDAO = new productDao();
+            	
+		    	Cookie[] cookies = request.getCookies();
+            	List<Product> list = productDAO.getListProducts();
+        		String txt = "";
+        		
+        		if(cookies != null) {
+        			for (Cookie cookie : cookies) {
+        				if (cookie.getName().equals("cart")) {
+        					txt += cookie.getValue();
+        				}
+        			}
+        		}
+        	 
+        		Cart cart = new Cart(txt, list);
+        		
+        		
+                double total = 0.0;
                 if(order != null){
-                	  total = orderDao.calculateOrderTotal(order.getId()); } %>
+                	  total = orderDao.calculateOrderTotal(order.getId()); } 
+                else{
+                	    total = cart.getTotalMoney();
+                	  }
+                	  %>
               
                 <h6 class="font-weight-medium"><%=new java.text.DecimalFormat("#,###").format(total)%></h6>
               </div>

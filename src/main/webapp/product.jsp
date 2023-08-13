@@ -286,16 +286,32 @@
                 <%
                 User user = (User) session.getAttribute("user");
                           if(user != null){ %>
-                            <button class="btn" onclick="addToWishlist(${product.getId()})">
+                           <!-- <button class="btn" onclick="addToWishlist(${product.getId()})">
                             <i class="fa fa-heart-o" style="margin-right: 5px"></i
                             ><span >Yêu thích</span>
-                          </button>
+                          </button> -->
+                          
+                           <ul class="product-btns" style="margin-bottom: 20px">
+				                <li>
+				                  <a href="#" onclick="addToWishlist(${product.getId()})">
+				                    <i class="fa fa-heart-o"></i> Yêu thích
+				                  </a>
+				                </li>
+          				   </ul>
                           <%} %>
                         <% if(user == null){ %>
-                           <button class="btn" onclick="redirectToLogin()">
+                          <!--   <button class="btn" onclick="redirectToLogin()">
                             <i class="fa fa-heart-o" style="margin-right: 5px"></i
                             ><span class="tooltipp">Yêu thích</span>
-                          </button>
+                          </button> -->
+                           <ul class="product-btns" style="margin-bottom: 20px">
+				                <li>
+				                  <a href="#" onclick="redirectToLogin()">
+				                    <i class="fa fa-heart-o"></i> Yêu thích
+				                  </a>
+				                </li>
+          				   </ul>
+                          
                           <%} %>  
                
                     
@@ -306,49 +322,99 @@
                 <li>Category:</li>
                 <li><a href="#">Hãng sản xuất: ${category}</a></li>
               </ul>
-              <div class="add-to-cart" style="display: flex;">
-              
-             <% if(user != null){ %>
-              <form action="buynowServlet" method="get">
-               <input type="hidden" value="${product.getId()}" name = 'idproductcheckout'>
-               <button class="add-to-cart-btn" style="margin-right: 10px;">
-                  <i class="fa fa-shopping-cart"></i> Mua ngay
-                </button>
-              </form>
-              <%} %>
-              
-              <% if(user == null){ %>
-             
-              
-               <button class="add-to-cart-btn" onclick="redirectToLogin()" style="margin-right: 10px;">
-                  <i class="fa fa-shopping-cart"></i> Mua ngay
-                </button>
-          
-              <%} %>
+
                 
-                 <%
-                       if(user == null){ %>
-                    	       <div class="add-to-cart">
+        <%
+          if(user == null){ %>
+                     <!--    <div class="add-to-cart">
                        
                         <button class="add-to-cart-btn" onclick="redirectToLogin()" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      -->
+                 <form action="BuyServlet" method="post">      
+                    <input type="hidden" value="${product.getId()}" name = 'id'>
+                <div class="add-to-cart">
+                  <div class="qty-label" style="width: 30%">
+                    Số lượng
+                    <div class="input-number">
+                      <input type="number" value="1" name = "num" />
+                      <span class="qty-up">+</span>
+                      <span class="qty-down">-</span>
+                    </div>
+                  </div>
+                  <button class="add-to-cart-btn" style="width: 50%" type="submit">
+                    <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                  </button>
+                </div>
+                </form>
                       <% }
                       %>
                       
-                      <%if(user != null){ %>
-                      <form action="addOrderServlet" method="post">
+          <%if(user != null){ %>
+                     <!--   <form action="addOrderServlet" method="post">
                       <div class="add-to-cart">
                         <input type="hidden" value="${product.getId()}" name = 'idproductcart'>
                         <button class="add-to-cart-btn" type="submit" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
-                      </form>
+                      </form> -->
+                      
+             <form action="addOrderServlet" method="post">
+                  <input type="hidden" value="${product.getId()}" name = 'idproductcart'>
+                <div class="add-to-cart">
+                  <div class="qty-label" style="width: 30%">
+                    Số lượng
+                    <div class="input-number">
+                      <input type="number" value="1" name = "number"/>
+                      <span class="qty-up">+</span>
+                      <span class="qty-down">-</span>
+                    </div>
+                  </div>
+                  <button type="submit" class="add-to-cart-btn" style="width: 50%">
+                    <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                  </button>
+                </div>
+              </form>
                       <%} %>
                 
+               <% if(user != null){ %>
+             <!--   <form action="buynowServlet" method="get">
+               <input type="hidden" value="${product.getId()}" name = 'idproductcheckout'>
+               <button class="add-to-cart-btn" style="margin-right: 10px;">
+                  <i class="fa fa-shopping-cart"></i> Mua ngay
+                </button>
+              </form>
+              -->
+              <form action="buynowServlet" method="get"> 
+               <input type="hidden" value="${product.getId()}" name = 'idproductcheckout'>
+              <div class="add-to-cart">
+                <button class="add-to-cart-btn" style="width: 85%" type="submit">
+                  <i class="fa fa-shopping-cart"></i> Mua ngay
+                </button>
               </div>
+               </form> 
+              <%} %>
+              
+         <% if(user == null){ %>
+             
+              
+              <!--   <button class="add-to-cart-btn" onclick="redirectToLogin()" style="margin-right: 10px;">
+                  <i class="fa fa-shopping-cart"></i> Mua ngay
+                </button> -->
+                
+                 <form action="buynowServlet" method="get"> 
+               <input type="hidden" value="${product.getId()}" name = 'idproductcheckout'>
+              <div class="add-to-cart">
+                <button class="add-to-cart-btn" style="width: 85%" type="submit">
+                  <i class="fa fa-shopping-cart"></i> Mua ngay
+                </button>
+              </div>
+               </form> 
+          
+              <%} %>
 
               
 
@@ -651,7 +717,7 @@
                         
                          
                         
-                    <c:if test="${numberPage <=6}">
+                    <c:if test="${numberPage >= 2 && numberPage <=6}">
                   
                      <c:forEach begin="${1}" end="${numberPage}" var="i">
                            <li class ="${(requestScope.page) == i ? 'active':''}" >
@@ -960,12 +1026,15 @@
                       </div>
                        <%
                        if(user == null){ %>
-                    	       <div class="add-to-cart">
-                       
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                    	       <form action="BuyServlet" method="post">
+                    <input type="hidden" value="${o.getId()}" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       

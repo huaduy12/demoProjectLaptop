@@ -47,8 +47,8 @@ public class addOrderServlet extends HttpServlet {
 
 
 		   request.setCharacterEncoding("UTF-8");
+		 
 		   String referer = request.getHeader("Referer"); // Lấy URL trang trước đó
-		   
 		   
 		    HttpSession session = request.getSession();
 		    User user = (User) session.getAttribute("user");
@@ -56,6 +56,13 @@ public class addOrderServlet extends HttpServlet {
 		    
 		    productDao productDao = new productDao();
 			String idProduct = request.getParameter("idproductcart");
+			
+			int num = 1;
+			String numproduct = request.getParameter("number");
+			if(numproduct != null) {
+				num = Integer.parseInt(numproduct);
+			}
+			
 			int id =-1;
 			if(idProduct != null) {
 				id = Integer.parseInt(idProduct);
@@ -76,10 +83,11 @@ public class addOrderServlet extends HttpServlet {
 			order = orderDao.getOrderByUserId(user.getId());
 			
 			 // Thêm sản phẩm vào chi tiết giỏ hàng (cartDetail)
-		    Orderdetail orderdetail = new Orderdetail(product.getDiscount(),1,product.getDiscount(), product.getId(),order.getId());
+		    Orderdetail orderdetail = new Orderdetail(product.getDiscount(),num,product.getDiscount()*num, product.getId(),order.getId());
 		    
 		    Orderdetail checkOrderDetail = orderDao.getOrderDetail(orderdetail);
 		    if(checkOrderDetail == null ) {
+		    	//System.out.println(orderdetail.toString());
 		    	orderDao.addOrderdetail(orderdetail);
 		    }else {
 		    	
@@ -91,7 +99,7 @@ public class addOrderServlet extends HttpServlet {
 			   orderDao.updateTotalOrderDetail(updateTotalorderDetail);
 				
 			}
-		    
+		   
 			
 		  // Cập nhật tổng giá trị giỏ hàng cart (nếu cần thiết)
 		  
@@ -104,7 +112,7 @@ public class addOrderServlet extends HttpServlet {
 			
 		   
 		   session.setAttribute("cartMessage", "Thêm vào giỏ hàng thành công");
-			response.sendRedirect(referer);
+		   response.sendRedirect(referer);
 	}
 
 }

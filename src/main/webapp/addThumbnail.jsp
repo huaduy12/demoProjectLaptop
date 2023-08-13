@@ -182,7 +182,8 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
       
-          </span></a></li>
+         <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+            class="app-menu__label">Quản lý liên hệ</span></a></li>
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
       </li>

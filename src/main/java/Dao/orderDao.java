@@ -8,7 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import Connection.ConnectionUtil;
-
+import Model.Cart;
+import Model.Item;
 import Model.Order;
 import Model.Orderdetail;
 import Model.SalesStatistics;
@@ -47,7 +48,7 @@ public class orderDao {
 						+ "GROUP BY\r\n"
 						+ "  YEAR(o.orderdate), MONTH(o.orderdate)\r\n"
 						+ "ORDER BY\r\n"
-						+ "  YEAR(o.orderdate), MONTH(o.orderdate);\r\n"
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate) limit 6;\r\n"
 						+ "");
 				ResultSet rs = st.executeQuery()) {
 			List<SalesStatistics> result = new ArrayList<>();
@@ -76,7 +77,7 @@ public class orderDao {
 						+ "GROUP BY\r\n"
 						+ "  YEAR(o.orderdate), MONTH(o.orderdate)\r\n"
 						+ "ORDER BY\r\n"
-						+ "  YEAR(o.orderdate), MONTH(o.orderdate);");
+						+ "  YEAR(o.orderdate), MONTH(o.orderdate) desc limit 6;");
 				ResultSet rs = st.executeQuery()) {
 			List<SalesStatistics> result = new ArrayList<>();
 			while (rs.next()) {
@@ -117,12 +118,61 @@ public class orderDao {
 		}
 	}
 	
+	
+	public Order getOrderById(int id) {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement(	"SELECT * FROM `order` where id = ?");
+				) {
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			
+			while (rs.next()) {
+				int idu = rs.getInt("id");
+				double total = rs.getDouble("total");
+				int user_id = rs.getInt("user_id");
+				String email = rs.getString("email");
+				Order order = new Order(idu,email,total,user_id);
+				return order;
+			}
+			return null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public int getIdOrderByUserLatest(int user_id) {
+		
 		try (Connection connection = ConnectionUtil.getConnection();
 
 				PreparedStatement st = connection.prepareStatement(	"SELECT * FROM `order` WHERE user_id = ? AND status = 2 ORDER BY orderdate DESC LIMIT 1;");
 				) {
 			st.setInt(1, user_id);
+			ResultSet rs = st.executeQuery();
+			
+			while (rs.next()) {
+				int idu = rs.getInt("id");
+				
+				
+				return idu;
+			}
+			return -1;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+public int getIdOrderByUserNoUser() {
+		
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement(	"SELECT * FROM `order` WHERE status = 2 ORDER BY id DESC LIMIT 1;");
+				) {
+			
 			ResultSet rs = st.executeQuery();
 			
 			while (rs.next()) {
@@ -337,6 +387,26 @@ public class orderDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addOrderBuyNowNoUser(Order order) {
+		try (
+			Connection conn = ConnectionUtil.getConnection();
+				PreparedStatement stt = conn.prepareStatement("Insert into `shoplaptop`.`order`(`fullname`,`email`, `phonenumber`, `address`, `note`, `orderdate`, `status`,`total`) values (?,?,?,?,?,NOW(),?,?);");
+		) {
+			stt.setString(1,order.getFullname());
+			stt.setString(2, order.getEmail());
+			stt.setString(3,order.getPhonenumber());
+			stt.setString(4, order.getAddress());
+			stt.setString(5,order.getNote());
+			
+			stt.setInt(6, 2);
+			stt.setDouble(7, order.getTotal_money());
+			
+			stt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void removeOrder(int id) {
 		try (Connection conn = ConnectionUtil.getConnection();
@@ -404,7 +474,31 @@ public class orderDao {
 	public List<Orderdetail> getListOrderdetailsAdmin() {
 		try (Connection connection = ConnectionUtil.getConnection();
 
-				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status is not null order by id desc;");
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status = 1 order by id desc;");
+				ResultSet rs = st.executeQuery()) {
+			List<Orderdetail> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double price = rs.getDouble("price");
+				int quantity = rs.getInt("quantity");
+				double total = rs.getDouble("total");
+				int order_id = rs.getInt("order_id");
+				int product_id = rs.getInt("product_id");
+				int status = rs.getInt("status");
+				Orderdetail orderdetail = new Orderdetail(id,price,quantity,total, product_id,order_id,status);
+				result.add(orderdetail);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
+	public List<Orderdetail> getListOrderdetailsAdminNotstatus1() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status != 1 and status is not null order by id desc;");
 				ResultSet rs = st.executeQuery()) {
 			List<Orderdetail> result = new ArrayList<>();
 			while (rs.next()) {
@@ -843,6 +937,53 @@ public class orderDao {
 			return null;
 		}
 	}
+	public void addOrderCookie(Cart  cart,Order order) {
 	
+		try  {
+			Connection conn = ConnectionUtil.getConnection();
+			PreparedStatement stt = conn.prepareStatement("insert into `order`(fullname,email,phonenumber,address,note,orderdate,status,total) values(?,?,?,?,?,NOW(),?,?);");
+				stt.setString(1,order.getFullname());
+				stt.setString(2, order.getEmail());
+				stt.setString(3, order.getPhonenumber());
+				stt.setString(4, order.getAddress());
+				stt.setString(5, order.getNote());
+				stt.setInt(6, order.getUser_id());  // thay cho status vì không tạo được construct thêm
+				stt.setDouble(7, order.getTotal_money());
+				stt.executeUpdate();
+				
+				
+				// lấy id mới dduojc tạo
+				PreparedStatement st = conn.prepareStatement("select* from `order` order by id desc limit 1;");
+				ResultSet rs = st.executeQuery();
+				if(rs.next()) {
+					int id = rs.getInt("id");
+					
+					for (Item i : cart.getItems()) {
+						PreparedStatement stt2 = conn.prepareStatement("insert into orderdetail(price,quantity,total,product_id,order_id,status) values(?,?,?,?,?,1);");
+						stt2.setDouble(1, i.getProduct().getDiscount());
+						stt2.setInt(2, i.getQuantity());
+						stt2.setDouble(3, i.getQuantity()*i.getPrice());
+						stt2.setInt(4, i.getProduct().getId());
+						stt2.setDouble(5, id);
+						stt2.executeUpdate();
+					}
+				}
+				
+				// cập nhập lại số lượng sản phẩm
+				PreparedStatement stt3 = conn.prepareStatement("update product set quantity = quantity - ? where id = ?");
+				for (Item i : cart.getItems()) {
+					stt3.setInt(1,i.getQuantity());
+					stt3.setInt(2, i.getProduct().getId());
+					stt3.executeUpdate();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		
+		
+		
+		
+	}
 	
 }

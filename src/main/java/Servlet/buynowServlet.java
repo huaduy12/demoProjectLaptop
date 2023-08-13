@@ -75,13 +75,26 @@ public class buynowServlet extends HttpServlet {
 		
 		Product product = productDao.getProductById(Integer.parseInt(product_idString));
 		
-		// ko đăng nhập
-		if(!useridString.isEmpty() || useridString != null) {
+		
+		if( useridString.trim() != "") {
 		
 			
 			Order order1 = new Order(fullname, email, phone, address, note,product.getDiscount(),Integer.parseInt(useridString));
 			orderDao.addOrderBuyNow(order1);	
 			int order_id = orderDao.getIdOrderByUserLatest(Integer.parseInt(useridString));
+			
+			Orderdetail orderdetail = new Orderdetail(product.getDiscount(), 1,product.getDiscount(), product.getId(), order_id,1);
+			
+			orderDao.addOrderdetailStatus(orderdetail);
+			productDao.updateQuantity(product.getId(), 1);
+			
+		}
+		// ko đăng nhập
+		if( useridString.trim() == "") {
+			
+			Order order1 = new Order(fullname, email, phone, address, note,product.getDiscount());
+			orderDao.addOrderBuyNowNoUser(order1);	
+			int order_id = orderDao.getIdOrderByUserNoUser();
 			
 			Orderdetail orderdetail = new Orderdetail(product.getDiscount(), 1,product.getDiscount(), product.getId(), order_id,1);
 			

@@ -1,3 +1,6 @@
+<%@page import="Model.Item"%>
+<%@page import="Model.Cart"%>
+<%@page import="Dao.productDao"%>
 <%@page import="Model.Product"%>
 <%@page import="Model.Orderdetail"%>
 <%@page import="Model.Order"%>
@@ -89,7 +92,7 @@ select{
             <div class="col-md-3">
               <div class="header-logo">
                 <a href="index.jsp" class="logo">
-                  <img src="./img/logo.png" alt="" style="font-weight: bold;"/>
+                  <img src="./img/p.png" alt="" style="font-weight: bold;"/>
                 </a>
               </div>
             </div>
@@ -123,7 +126,7 @@ select{
               
                  <!-- Wishlist -->
                 <div>
-                  <a href="wishlist.jsp">
+                  <a href="loadwishlist">
                     <i class="fa fa-heart-o"></i>
                     <span>Yêu thích</span>
                     <%int c =0;
@@ -157,9 +160,36 @@ select{
         		        	  count = orderDao.countItemOrderDetail(order.getId());
         		        }
             		  
+        		    }else{
+        		    	productDao productDAO = new productDao();
+        		    	Cookie[] cookies = request.getCookies();
+        				
+        				List<Product> list = productDAO.getListProducts();
+        				String txt = "";
+        				
+        				if(cookies != null) {
+        					for (Cookie cookie : cookies) {
+        						if (cookie.getName().equals("cart")) {
+        							txt += cookie.getValue();
+        						}
+        					}
+        				}
+        				
+        				Cart cart = new Cart(txt, list);
+        				List<Item> items = cart.getItems();
+        				
+        				
+        				if(items.size() != 0) {
+        					count = items.size();
+        				}
+        				else {
+        					count = 0;
+        				}
+        		    	
         		    }
+        		    	
                     %>
-                    <div class="qty"><%=count%></div>
+                    <div class="qty" id = "cartcount"><%=count%></div>
                   </a>
                   <div class="cart-dropdown">
                     <div class="cart-list">
@@ -189,6 +219,39 @@ select{
                       </div>
 
                      <%}
+                    }else{
+                    	productDao productDAO = new productDao();
+        		    	Cookie[] cookies = request.getCookies();
+                    	List<Product> list = productDAO.getListProducts();
+                		String txt = "";
+                		
+                		if(cookies != null) {
+                			for (Cookie cookie : cookies) {
+                				if (cookie.getName().equals("cart")) {
+                					txt += cookie.getValue();
+                				}
+                			}
+                		}
+                		
+                		Cart cart = new Cart(txt, list);
+                		 List<Item> items = cart.getItems();
+                		  for(Item it : items){ %>
+                			 
+                			  <div class="product-widget">
+                        <div class="product-img">
+                          <img src="<%=it.getProduct().getThumbnail()%>" alt="" />
+                        </div>
+                        <div class="product-body">
+                          <h3 class="product-name">
+                            <a href="#"><%=it.getProduct().getName()%></a>
+                          </h3>
+                          <h4 class="product-price">
+                            <span class="qty"><%=it.getQuantity()%>x</span><%=new java.text.DecimalFormat("#,###").format(it.getPrice())%>
+                          </h4>
+                        </div>
+                       
+                      </div>
+                    <%		 }
                     }
                      %>
                       
@@ -199,6 +262,22 @@ select{
                       <%double t = 0.0;
                         if(order != null){
                         	t =orderDao.calculateOrderTotal(order.getId());
+                        }else{
+                        	productDao productDAO = new productDao();
+            		    	Cookie[] cookies = request.getCookies();
+                        	List<Product> list = productDAO.getListProducts();
+                    		String txt = "";
+                    		
+                    		if(cookies != null) {
+                    			for (Cookie cookie : cookies) {
+                    				if (cookie.getName().equals("cart")) {
+                    					txt += cookie.getValue();
+                    				}
+                    			}
+                    		}
+                    		
+                    		Cart cart = new Cart(txt, list);
+                    		t = cart.getTotalMoney();
                         }
                       %>
                       <h5>Tổng tiền: <%=new java.text.DecimalFormat("#,###").format(t)%></h5>

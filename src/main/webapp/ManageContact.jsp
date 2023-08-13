@@ -1,3 +1,5 @@
+<%@page import="Dao.userDao"%>
+<%@page import="Model.Feedback"%>
 <%@page import="Model.User"%>
 <%@page import="java.util.List"%>
 <%@page import="Model.Product"%>
@@ -6,7 +8,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:useBean id="productDao" class="Dao.productDao" scope="page" />
+<jsp:useBean id="concactDao" class="Dao.concactDao" scope="page" />
 <jsp:useBean id="reviewDao" class="Dao.reviewDao" scope="application" />
+<jsp:useBean id="userDao" class="Dao.userDao" scope="application" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
@@ -15,7 +19,7 @@
 <html lang="en">
 
 <head>
-  <title>Danh sách người dùng</title>
+  <title>Danh sách liên hệ</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,7 +54,7 @@
       </li>
     </ul>
   </header>
-  Sidebar menu
+  Liên hệ
   <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
   <aside class="app-sidebar">
     <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="img/anhdaidien.jpg" width="50px"
@@ -73,7 +77,7 @@
       
       <li><a class="app-menu__item " href="indexAdmin.jsp"><i class='app-menu__icon bx bx-tachometer'></i><span
             class="app-menu__label">Bảng điều khiển</span></a></li>
-      <li><a class="app-menu__item active" href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i>
+      <li><a class="app-menu__item " href="ManageEmployee"><i class='app-menu__icon bx bx-id-card'></i>
           <span class="app-menu__label">Quản lý người dùng</span></a></li>
           
       <li><a class="app-menu__item" href="ManageProduct"><i
@@ -82,7 +86,7 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
       
-        <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+         <li><a class="app-menu__item active" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
             class="app-menu__label">Quản lý liên hệ</span></a></li>
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
@@ -105,17 +109,7 @@
           <div class="tile-body">
 
             <div class="row element-button">
-              <div class="col-sm-2">
 
-                <a class="btn btn-add btn-sm" href="EditUser.jsp" title="Thêm"><i class="fas fa-plus"></i>
-                  Tạo mới người dùng</a>
-              </div>
-            
-             <div class="col-sm-2">
-                              <a class="btn btn-delete btn-sm nhap-tu-file" href="RecoverAccount" title="Khôi phục"><i
-                                  class="fas fa-file-upload"></i> Khôi phục tài khoản</a>
-                            </div>
-              
               <div class="col-sm-2">
                 <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
                     class="fas fa-print"></i> In dữ liệu</a>
@@ -127,54 +121,75 @@
               <thead>
                 <tr>
                   
-                  <th>Mã khách hàng</th>
-                  <th >Tên tài khoản</th>
-                  <th >Họ và tên</th>
+                  <th>Tên tài khoản</th>
                   <th >Email</th>
-                  <th>Số điện thoại</th>
-                  <th width="200">Địa chỉ</th>
-                  <th>Vị trí </th>
-                  <th >Tính năng</th>
+                  <th >Tiêu đề</th>
+                  <th width="200" >Tin nhắn</th>
+                  <th >Thời gian gửi</th>
+                  <th >Phản hồi</th>
                 </tr>
               </thead>
               <tbody>
               
- 				<c:forEach items="${users}" var="o">
+ 				<%List<Feedback> feedbacks =  concactDao.getListFeedbacks();
+ 				for(Feedback feedback : feedbacks){
+ 					User u = userDao.getUserById(feedback.getUser_id());
+ 				%>
                                 <tr>
                                     
-                              	    <td>${o.id}</td>
-                                     <td>${o.username}</td>
+                              	    <td><%=u.getUsername()%></td>
+                                     <td><%=feedback.getEmail()%></td>
                                    
-                                    <td>${o.fullname}</td>
-                                    <td>${o.email}</td>
-                                    <td>${o.phonenumber }</td>
-                                    <td>${o.address}</td>
-                                    <c:if test="${o.role_id ==1 }">
-                                        <td>Quản trị viên</td>
-                                    </c:if>
-                                     <c:if test="${o.role_id ==2 }">
-                                        <td>Khách hàng</td>
-                                    </c:if>
-                                    
+                                    <td><%=feedback.getSubject()%></td>
+                                    <td><%=feedback.getMessage()%></td>
+                                    <td><%=feedback.getCreate_at()%></td>
+
                                     <td style ="display:flex">
                                     
-                                   <form action="deleteUser" method= "post" >
-                                   <input type="hidden" value="${o.id}" name = "iduser" >
+                                   <form action="deleteContact" method= "post" style="margin-right: 5px;" >
+                                   <input type="hidden" value="<%=feedback.getId()%>" name = "id" >
                                     <button class="btn btn-primary btn-sm trash" type="submit" title="Xóa"
-                                       ><i class="fas fa-trash-alt"></i>
+                                       >Xóa
                                       </button>
                                       </form>
                                       
-                                       <form action="EditUser" method="get">
-                                       <input type="hidden" value="${o.id}" name = "iduser" >
-                                      <button class="btn btn-primary btn-sm edit" type="submit" title="Sửa" 
-                                        ><i class="fas fa-edit"></i>
+                                       <form action="responFeedback" method="get">
+                                       <input type="hidden" value="<%=feedback.getId()%>" name = "id" >
+                                      <button class="btn btn-primary btn-sm edit" type="submit" title="Trả lời" style="background-color: green;color: #fff;"
+                                        >Trả lời
                                       </button>
                                       </form>
                                     
                                     </td>
                                 </tr>
-                               </c:forEach>
+                         <%} %>     
+                         
+                         <%List<Feedback> feedbackss =  concactDao.getListFeedbackRespon();
+ 				for(Feedback feedback : feedbackss){
+ 					User u = userDao.getUserById(feedback.getUser_id());
+ 				%>
+                                <tr>
+                                    
+                              	    <td><%=u.getUsername()%></td>
+                                     <td><%=feedback.getEmail()%></td>
+                                   
+                                    <td><%=feedback.getSubject()%></td>
+                                    <td><%=feedback.getMessage()%></td>
+                                    <td><%=feedback.getCreate_at()%></td>
+
+                                    <td style ="display:flex">
+                                    
+                                   
+                                      
+                                       
+                                      <button class="btn btn-primary btn-sm edit" title="Trả lời" style="background-color: green;color: #fff;"
+                                        > Đã trả lời
+                                      </button>
+                                      
+                                    
+                                    </td>
+                                </tr>
+                         <%} %>     
 
               </tbody>
             </table>
@@ -184,47 +199,7 @@
     </div>
   </main>
 
-  <!--
-  MODAL
--->
-  <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-    data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-
-        <div class="modal-body">
-          <div class="row">
-            <div class="form-group  col-md-12">
-              <span class="thong-tin-thanh-toan">
-                <h5>Chỉnh sửa thông tin nhân viên cơ bản</h5>
-              </span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label class="control-label">ID nhân viên</label>
-              <input class="form-control" type="text" required value="#CD2187" disabled>
-            </div>
-    
-          </div>
-          <BR>
-          <a href="#" style="    float: right;
-        font-weight: 600;
-        color: #ea0000;">Chỉnh sửa nâng cao</a>
-          <BR>
-          <BR>
-          <button class="btn btn-save" type="button">Lưu lại</button>
-          <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-          <BR>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--
-  MODAL
--->
+  
 
   <!-- Essential javascripts for application to work-->
   <script src="js/jquery-3.2.1.min.js"></script>

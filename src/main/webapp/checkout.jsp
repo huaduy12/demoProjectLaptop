@@ -1,3 +1,6 @@
+<%@page import="Dao.productDao"%>
+<%@page import="Model.Item"%>
+<%@page import="Model.Cart"%>
 <jsp:useBean id="productDao" class="Dao.productDao" scope="application" />
 <jsp:useBean id="orderDao" class="Dao.orderDao" scope="application" />
 <%@page import="java.util.List"%>
@@ -16,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>Thanh toán</title>
 
     <!-- Google font -->
     <link
@@ -212,7 +215,34 @@
                 </div>
                 
                 <%}
-                 }%>
+                 }else{
+						productDao productDAO = new productDao();
+                    	
+        		    	Cookie[] cookies = request.getCookies();
+                    	List<Product> list = productDAO.getListProducts();
+                		String txt = "";
+                		
+                		if(cookies != null) {
+                			for (Cookie cookie : cookies) {
+                				if (cookie.getName().equals("cart")) {
+                					txt += cookie.getValue();
+                				}
+                			}
+                		}
+                	    
+                		Cart cart = new Cart(txt, list);
+                		 List<Item> items = cart.getItems();
+                		  for(Item it : items){
+                			  count++;
+                			  %> 
+                	 <div class="order-col">
+                  <div><%=it.getQuantity()%>x <%=it.getProduct().getName()%></div>
+                  <div><%=new java.text.DecimalFormat("#,###").format(it.getPrice()*it.getQuantity())%></div>
+                </div>
+                	 
+              <% }
+                		  }
+                 %>
               </div>
               <div class="order-col">
                 <div>Phí vận chuyển</div>
@@ -222,7 +252,25 @@
                 <div><strong>Tổng tiền</strong></div>
                   <% double total = 0.0;
                 if(order != null){
-                	  total = orderDao.calculateOrderTotal(order.getId());  } %>
+                	  total = orderDao.calculateOrderTotal(order.getId());  } 
+                else{
+                	productDao productDAO = new productDao();
+                	
+    		    	Cookie[] cookies = request.getCookies();
+                	List<Product> list = productDAO.getListProducts();
+            		String txt = "";
+            		
+            		if(cookies != null) {
+            			for (Cookie cookie : cookies) {
+            				if (cookie.getName().equals("cart")) {
+            					txt += cookie.getValue();
+            				}
+            			}
+            		}
+            	    
+            		Cart cart = new Cart(txt, list);
+            		total = cart.getTotalMoney();
+                	  }%>
                 	  
                 <div><strong class="order-total"><%=new java.text.DecimalFormat("#,###").format(total)%></strong></div>
               </div>

@@ -71,6 +71,34 @@ public class userDao {
 		}
 	}
 	
+	public List<User> getListUsersRecover() {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT * FROM user where status = 0 order by id desc;");
+				ResultSet rs = st.executeQuery()) {
+			List<User> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String fullname = rs.getString("fullname");
+				String email = rs.getString("email");
+				String phonenumber = rs.getString("phonenumber");
+				String address = rs.getString("address");
+				String password = rs.getString("password");
+				int roleId = rs.getInt("role_id");
+				int status = rs.getInt("status");
+				
+				User user = new User(id,username,fullname, email, phonenumber, address,password,roleId,status);
+				result.add(user);
+			}
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+	
 	public User getUserById(int id) {
 		try (Connection connection = ConnectionUtil.getConnection();
 
@@ -111,14 +139,14 @@ public class userDao {
 				int id = rs.getInt("id");
 				String username = rs.getString("username");
 				String fullname = rs.getString("fullname");
-				String emailuser = rs.getString("email");
+				String emailUser = rs.getString("email");
 				String phonenumber = rs.getString("phonenumber");
 				String address = rs.getString("address");
 				String password = rs.getString("password");
 				int roleId = rs.getInt("role_id");
 				int status = rs.getInt("status");
 				
-				User user = new User(id,username,fullname, emailuser, phonenumber, address,password,roleId,status);
+				User user = new User(id,username,fullname, emailUser, phonenumber, address,password,roleId,status);
 				return user;
 					
 			}
@@ -302,6 +330,27 @@ public class userDao {
 	public void removeUser(int id) {
 		try (Connection conn = ConnectionUtil.getConnection();
 				PreparedStatement stt = conn.prepareStatement("UPDATE user SET status = 0 WHERE (id = ?)");) {
+			stt.setInt(1, id);
+			stt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void RecoverUser(int id) {
+		try (Connection conn = ConnectionUtil.getConnection();
+				PreparedStatement stt = conn.prepareStatement("UPDATE user SET status = 1 WHERE (id = ?)");) {
+			stt.setInt(1, id);
+			stt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteUser(int id) {
+		try (Connection conn = ConnectionUtil.getConnection();
+				PreparedStatement stt = conn.prepareStatement("DELETE from user WHERE (id = ?)");) {
 			stt.setInt(1, id);
 			stt.executeUpdate();
 		} catch (Exception e) {

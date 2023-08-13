@@ -118,6 +118,20 @@ public class productDao {
 		}
 		}
 	
+	public void updateCategory(int id,String name) {
+		try (
+			Connection conn = ConnectionUtil.getConnection();
+			PreparedStatement stt = conn.prepareStatement("update `shoplaptop`.`category` set name = ? where id = ?");
+		){
+			
+			stt.setString(1, name);
+			stt.setInt(2, id);
+			stt.executeUpdate();
+		} catch (Exception e) {
+				e.printStackTrace();
+		}
+		}
+	
 	public int getCountProduct() {
 		try (Connection connection = ConnectionUtil.getConnection();
 
@@ -505,6 +519,81 @@ public class productDao {
 		try (Connection connection = ConnectionUtil.getConnection();
 
 				PreparedStatement st = connection.prepareStatement("SELECT * FROM product WHERE id = ? and quantity > 0 and status = 0;");
+				) {
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			
+			while (rs.next()) {
+				
+				int idp = rs.getInt("id");
+				String name = rs.getString("name");
+				String short_des = rs.getString("short_description");
+				Double price = rs.getDouble("price");
+				Double discount = rs.getDouble("discount");
+				int quantity = rs.getInt("quantity");
+				String thumbnail = rs.getString("thumbnail");
+				String description = rs.getString("description");
+				int is_featured = rs.getInt("is_featured");
+				int status = rs.getInt("status");
+				int category_id = rs.getInt("category_id");
+				Date create_at = rs.getDate("create_at");
+				Date update_at = rs.getDate("update_at");
+				
+				Product product = new Product(idp,name,short_des,price, discount, quantity, thumbnail, description, is_featured, status, category_id, create_at, update_at);
+				
+				return product;
+			}
+			return null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Product getProductWishlist(int id) {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT * FROM product WHERE id = ?;");
+				) {
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			
+			while (rs.next()) {
+				
+				int idp = rs.getInt("id");
+				String name = rs.getString("name");
+				String short_des = rs.getString("short_description");
+				Double price = rs.getDouble("price");
+				Double discount = rs.getDouble("discount");
+				int quantity = rs.getInt("quantity");
+				String thumbnail = rs.getString("thumbnail");
+				String description = rs.getString("description");
+				int is_featured = rs.getInt("is_featured");
+				int status = rs.getInt("status");
+				int category_id = rs.getInt("category_id");
+				Date create_at = rs.getDate("create_at");
+				Date update_at = rs.getDate("update_at");
+				
+				Product product = new Product(idp,name,short_des,price, discount, quantity, thumbnail, description, is_featured, status, category_id, create_at, update_at);
+				
+				return product;
+			}
+			return null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	
+	public Product getOrderById(int id) {
+		try (Connection connection = ConnectionUtil.getConnection();
+
+				PreparedStatement st = connection.prepareStatement("SELECT * FROM product WHERE id = ? and status = 0;");
 				) {
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();

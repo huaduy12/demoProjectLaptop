@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>Mua ngay</title>
 
     <!-- Google font -->
     <link
@@ -186,11 +186,8 @@
               </div>
                <%   
         		    User user = (User) session.getAttribute("user");
-        		    Order order = null;
-        		    if(user != null){
-        		        order = orderDao.getOrderByUserId(user.getId()); 
-        		    }
-                    %>
+        		  %>
+        		  
               <input type="hidden" name = "user_id" value = "<%=user != null ? user.getId() : ""%>">
               <input type="hidden" name = "product_id" value = "${buyproduct !=null ? buyproduct.getId(): ''}">
               <div class="order-products">

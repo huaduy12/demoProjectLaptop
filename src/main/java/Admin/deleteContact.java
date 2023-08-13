@@ -1,4 +1,4 @@
-package Servlet;
+package Admin;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,22 +6,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import Dao.wishlistDao;
-import Model.User;
+import Dao.concactDao;
 
 /**
- * Servlet implementation class removeProductWish
+ * Servlet implementation class deleteContact
  */
-@WebServlet("/removeProductWish")
-public class removeProductWish extends HttpServlet {
+@WebServlet("/deleteContact")
+public class deleteContact extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public removeProductWish() {
+    public deleteContact() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,26 +36,13 @@ public class removeProductWish extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		
-		wishlistDao wishlistDao = new wishlistDao();
 		
 		
-		HttpSession session = request.getSession();
+		int id = Integer.parseInt(request.getParameter("id"));
 		
-		User user = (User) session.getAttribute("user");
-		
-		String idproductString = request.getParameter("idproductremove");
-		
-		int id = -1;
-		if(idproductString != null) {
-			id = Integer.parseInt(idproductString);
-		}
-		
-		if(user != null) {
-			wishlistDao.removeWishlist(id, user.getId());
-		}
-		response.sendRedirect("loadwishlist");
+		concactDao concactDao = new concactDao();
+		concactDao.deleteFeedback(id);
+		response.sendRedirect("ManageContact.jsp");
 	}
 
 }

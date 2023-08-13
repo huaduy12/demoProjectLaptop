@@ -86,7 +86,8 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
      
-    
+      <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+            class="app-menu__label">Quản lý liên hệ</span></a></li>
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
       </li>
@@ -323,6 +324,7 @@
     <% int[] mont = new int[6];
 	int[] sum = new int[6];
   List<SalesStatistics> statisticsListSum = orderDao.getListSumSales();
+
   for (int i = 0; i < statisticsListSum.size(); i++) {
 	  SalesStatistics statistics = statisticsListSum.get(i);
 	  mont[i] = statistics.getOrderMonth();
@@ -331,7 +333,7 @@
   %>
   
     var data1 = {
-    	      labels: ["Tháng <%=mont[0]%>", "Tháng <%=mont[1]%>", "Tháng <%=mont[2]%>", "Tháng <%=mont[3]%>", "Tháng <%=mont[4]%>", "Tháng <%=mont[5]%>"],
+    	      labels: ["Tháng <%=mont[5]%>", "Tháng <%=mont[4]%>", "Tháng <%=mont[3]%>", "Tháng <%=mont[2]%>", "Tháng <%=mont[1]%>", "Tháng <%=mont[0]%>"],
     	      datasets: [{
     	        label: "Dữ liệu đầu tiên",
     	        fillColor: "rgba(9, 109, 239, 0.651)  ",
@@ -340,7 +342,7 @@
     	        pointStrokeColor: "rgb(9, 109, 239)",
     	        pointHighlightFill: "rgb(9, 109, 239)",
     	        pointHighlightStroke: "rgb(9, 109, 239)",
-    	        data: [<%=sum[0]%>, <%=sum[1]%>, <%=sum[2]%>, <%=sum[3]%>, <%=sum[4]%>, <%=sum[5]%>]
+    	        data: [<%=sum[5]%>, <%=sum[4]%>, <%=sum[3]%>, <%=sum[2]%>, <%=sum[1]%>, <%=sum[0]%>]
     	      },  
     	      ]
     	    };

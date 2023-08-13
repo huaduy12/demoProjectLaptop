@@ -91,6 +91,13 @@ public class updateCartServlet extends HttpServlet {
 			orderdetail = orderDao.getOrderdetail(order_id);
 			orderDao.removeOrderdetail(orderdetail.getId());
 			
+			Orderdetail updateTotalorderDetail = new Orderdetail(orderdetail.getPrice(),orderdetail.getQuantity(),orderdetail.getPrice()*(orderdetail.getQuantity()),orderdetail.getProduct_id(),orderdetail.getOrder_id() );
+			orderDao.updateTotalOrderDetail(updateTotalorderDetail);
+			
+			  double total = orderDao.calculateOrderTotal(updateTotalorderDetail.getOrder_id());
+			   Order order2 = new Order(updateTotalorderDetail.getOrder_id(),total,1);// lấy tạm là 1 vì user_id trong trường hợp này cũng không cần
+			   orderDao.updateOrder(order2);
+			
 			
 			minus = null;
 			plus = null;

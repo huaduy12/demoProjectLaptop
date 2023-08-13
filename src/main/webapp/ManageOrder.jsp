@@ -84,7 +84,8 @@
       <li><a class="app-menu__item active"  href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
      
-          </span></a></li>
+          <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+            class="app-menu__label">Quản lý liên hệ</span></a></li>
     
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
@@ -166,15 +167,70 @@
       			      </select>
                     <%} %>
                     
-                     <% if(o.getStatus() ==3){ %>
-                    <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
+                    <% //if(o.getStatus() ==3){ %>
+                <!--      <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
 	                       
       						 <option value="3" selected="selected" > <span class="badge bg-danger"> Đã hủy </span> </option>
       						  <option value="2"  > <span class="badge bg-success">Giao dịch thành công</span> </option>
       						   <option value="1" > <span class="badge bg-info">Đang chờ xử lý</span></option>
       						 
+      			      </select> -->
+                    <%//} %>
+                    
+                    </form>
+                     
+                   </td>
+                     
+                  </tr>
+               <%} %> 
+               <%List<Orderdetail> orderde = orderDao.getListOrderdetailsAdminNotstatus1();
+                 for(Orderdetail o: orderde){
+                	 String name = orderDao.getNameById(o.getOrder_id());
+                	 String nameproduct = productDao.getNameProduct(o.getProduct_id());
+                %>
+                <tr>
+                  
+                    <td><%=o.getId()%></td>
+                    <td><%=name %></td>
+                    <td><%=nameproduct %></td>
+                    <td><%=o.getQuantity()%></td>
+                    <td> <%=new java.text.DecimalFormat("#,###").format(o.getTotal_money())%></td>
+                    
+                    <% if(o.getStatus() ==1){ %>
+                    <td><span class="badge bg-info">Đang chờ xử lý</span></td>
+                    <%} %>
+                    
+                      <% if(o.getStatus() ==2){ %>
+                    <td><span class="badge bg-success">Giao dịch thành công</span></td>
+                    <%} %>
+                    
+                      <% if(o.getStatus() ==3){ %>
+                    <td><span class="badge bg-danger">Đã hủy</span></td>
+                    <%} %>
+                    
+                    
+                    <td>
+                    <form id="form_<%=o.getId()%>" method="post" action="UpdateStatus">
+                    <input type="hidden" name="orderdetail_id" value="<%=o.getId()%>">
+                      <% if(o.getStatus() ==1){ %>
+                       <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
+	                       
+      						 <option value="1" selected="selected" > <span class="badge bg-info">Đang chờ xử lý</span> </option>
+      						  <option value="2"  > <span class="badge bg-success">Giao dịch thành công</span> </option>
+      						   <option value="3" > <span class="badge bg-danger">Đã hủy</span></option>
+      						 
       			      </select>
                     <%} %>
+                    
+                    <% //if(o.getStatus() ==3){ %>
+                <!--      <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
+	                       
+      						 <option value="3" selected="selected" > <span class="badge bg-danger"> Đã hủy </span> </option>
+      						  <option value="2"  > <span class="badge bg-success">Giao dịch thành công</span> </option>
+      						   <option value="1" > <span class="badge bg-info">Đang chờ xử lý</span></option>
+      						 
+      			      </select> -->
+                    <%//} %>
                     
                     </form>
                      
@@ -183,7 +239,6 @@
                   </tr>
                <%} %> 
                
-  
                 </tbody>
               </table>
             </div>
@@ -205,7 +260,14 @@
   <!-- Data table plugin-->
   <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-  <script type="text/javascript">$('#sampleTable').DataTable();</script>
+  <script >
+  
+  $(document).ready(function() { 
+      $('#sampleTable').DataTable({ 
+       "order": [] 
+      }); 
+  }) 
+  </script>
   
   
   <script>
@@ -238,7 +300,7 @@
           });
       });
     });
-    oTable = $('#sampleTable').dataTable();
+   
     $('#all').click(function (e) {
       $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
       e.stopImmediatePropagation();

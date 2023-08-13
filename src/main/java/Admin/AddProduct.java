@@ -49,7 +49,7 @@ public class AddProduct extends HttpServlet {
 		String thongtin =request.getParameter("description");
 	
 		
-		Product product = new Product( name, shortdes, gia, discount, soluong, anh, thongtin, feature,maloai);
+		Product product = new Product( name, shortdes, gia, discount, soluong, anh, thongtin,feature,maloai);
 		
 		productDao productDao = new productDao();
 		

@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>Cửa hàng</title>
 
     <!-- Google font -->
     <link
@@ -371,11 +371,15 @@
                       </div>
                       <%
                        if(user == null){ %>
-                     <div class="add-to-cart">
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                     <form action="BuyServlet" method="post">
+                    <input type="hidden" value="${o.getId()}" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       
@@ -419,7 +423,7 @@
               
               
                  
-                  <c:if test="${numberPage <=6}">
+                  <c:if test="${numberPage >= 2 && numberPage <=6}">
                   
                      <c:forEach begin="${1}" end="${numberPage}" var="i">
                            <li class ="${(requestScope.page) == i ? 'active':''}" ><a class = "numberpage" href="store?page=${i}">${i}</a></li>
@@ -596,10 +600,15 @@
                           </button>
                           <%} %>
                         <% if(user == null){ %>
-                           <button class="add-to-wishlist" onclick="redirectToLogin()">
-                            <i class="fa fa-heart-o"></i
-                            ><span class="tooltipp">Yêu thích</span>
-                          </button>
+                            <form action="BuyServlet" method="post">
+                    <input type="hidden" value="${o.getId()}" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
+                         <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+                        </button>
+                      </div>
+                      
+                      </form> 
                           <%} %>  
                           
                           <button class="add-to-compare">
@@ -664,7 +673,7 @@
               
               
                  
-                  <c:if test="${numberPage <=6}">
+                  <c:if test="${numberPage >= 2 && numberPage <=6}">
                   
                      <c:forEach begin="${1}" end="${numberPage}" var="i">
                            <li class ="${(requestScope.page) == i ? 'active':''}" >
@@ -862,11 +871,15 @@
                       </div>
                       <%
                        if(user == null){ %>
-                     <div class="add-to-cart">
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                      <form action="BuyServlet" method="post">
+                    <input type="hidden" value="${o.getId()}" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       
@@ -908,7 +921,7 @@
               
               <ul class="store-pagination">
               
-                  <c:if test="${numberPage <=6}">
+                  <c:if test="${numberPage >= 2 && numberPage <=6}">
                   
                      <c:forEach begin="${1}" end="${numberPage}" var="i">
                            <li class ="${(requestScope.page) == i ? 'active':''}" >

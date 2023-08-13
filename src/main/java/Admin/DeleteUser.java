@@ -1,6 +1,11 @@
 package Admin;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +20,29 @@ import Dao.userDao;
 @WebServlet("/deleteUser")
 public class DeleteUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	userDao userDao = new userDao();
+	
+	  private ScheduledFuture<?> scheduledFuture;
+
+	    public ScheduledFuture<?> getScheduledFuture() {
+	        return scheduledFuture;
+	    }
+
+	    public void setScheduledFuture(ScheduledFuture<?> scheduledFuture) {
+	        this.scheduledFuture = scheduledFuture;
+	    }
+	    
+	    
+	    // Hàm lên lịch
+	    public void scheduleTask(int id) {
+	    	 long delay = 30; // Số ngày
+		     TimeUnit timeUnit = TimeUnit.DAYS;
+		    
+	        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	        scheduledFuture = scheduler.schedule(() -> userDao.deleteUser(id), delay, timeUnit);
+	        scheduler.shutdown();
+	    }
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,13 +62,15 @@ public class DeleteUser extends HttpServlet {
 		
 		
 		String idString =  request.getParameter("iduser");
-		int id = -1;
-		if(idString != null) {
-			id = Integer.parseInt(idString);
-		}
-		userDao userDao = new userDao();
 		
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		
+		final int id = Integer.parseInt(idString);
+			
 		userDao.removeUser(id);
+		scheduleTask(id);
+		
+		
 		response.sendRedirect("ManageEmployee");
 		
 	}

@@ -82,7 +82,7 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
       
-        <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+  <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
             class="app-menu__label">Quản lý liên hệ</span></a></li>
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
@@ -94,7 +94,7 @@
   <main class="app-content">
     <div class="app-title">
       <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
+        <li class="breadcrumb-item active"><a href="#"><b>Danh sách người dùng cần khôi phục</b></a></li>
       </ul>
       <div id="clock"></div>
     </div>
@@ -105,22 +105,22 @@
           <div class="tile-body">
 
             <div class="row element-button">
-              <div class="col-sm-2">
-
-                <a class="btn btn-add btn-sm" href="EditUser.jsp" title="Thêm"><i class="fas fa-plus"></i>
-                  Tạo mới người dùng</a>
-              </div>
             
-             <div class="col-sm-2">
-                              <a class="btn btn-delete btn-sm nhap-tu-file" href="RecoverAccount" title="Khôi phục"><i
-                                  class="fas fa-file-upload"></i> Khôi phục tài khoản</a>
-                            </div>
-              
-              <div class="col-sm-2">
-                <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                    class="fas fa-print"></i> In dữ liệu</a>
+              <div class="col-sm-6">
+
+                <a class="btn btn-add btn-sm"  title="Quay lại" href="ManageEmployee">
+                   <i class="fas fa-chevron-left"></i> Quay lại
+                </a>
               </div>
-    
+              
+              
+              
+              <div class="col-sm-6 d-flex  justify-content-end">
+
+                <a class="btn btn-add btn-sm"  title="Note">
+                 <i class="fa fa-bell" aria-hidden="true"></i> <span >LƯU Ý:</span> Bạn chỉ có thể khôi phục tài khoản người dùng sau thời gian xóa là 1 ngày</a>
+              </div>
+
             </div>
             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
               id="sampleTable">
@@ -156,19 +156,12 @@
                                         <td>Khách hàng</td>
                                     </c:if>
                                     
-                                    <td style ="display:flex">
+                                    <td >
                                     
-                                   <form action="deleteUser" method= "post" >
+                                   <form action="RecoverAccount" method= "post" >
                                    <input type="hidden" value="${o.id}" name = "iduser" >
-                                    <button class="btn btn-primary btn-sm trash" type="submit" title="Xóa"
-                                       ><i class="fas fa-trash-alt"></i>
-                                      </button>
-                                      </form>
-                                      
-                                       <form action="EditUser" method="get">
-                                       <input type="hidden" value="${o.id}" name = "iduser" >
-                                      <button class="btn btn-primary btn-sm edit" type="submit" title="Sửa" 
-                                        ><i class="fas fa-edit"></i>
+                                    <button class="btn btn-primary btn-sm trash" type="submit" title="Khôi phục"
+                                       ><i class="fas fa-plus"></i> Khôi phục
                                       </button>
                                       </form>
                                     
@@ -248,21 +241,11 @@
   <!-- Data table plugin-->
   <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-  
-   <script type="text/javascript">/* $('#sampleTable').DataTable();*/ </script> 
-  
+  <script type="text/javascript">$('#sampleTable').DataTable();</script>
   <script>
     
     
-   /* oTable = $('#sampleTable').dataTable(); */
-    $(document).ready(function() { 
-        $('#sampleTable').dataTable({ 
-       
-         "order": [] 
-        }); 
-    }) 
-    
-    
+    oTable = $('#sampleTable').dataTable();
     $('#all').click(function (e) {
       $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
       e.stopImmediatePropagation();

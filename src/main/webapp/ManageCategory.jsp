@@ -8,7 +8,7 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Danh sách hãng sản xuất | Quản trị Admin</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -77,7 +77,7 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
       
-        <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+         <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
             class="app-menu__label">Quản lý liên hệ</span></a></li>
       <li><a class="app-menu__item" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
@@ -89,7 +89,7 @@
     <main class="app-content">
         <div class="app-title">
             <ul class="app-breadcrumb breadcrumb side">
-                <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+                <li class="breadcrumb-item active"><a href="#"><b>Danh sách hãng sản xuất</b></a></li>
             </ul>
             <div id="clock"></div>
         </div>
@@ -98,23 +98,20 @@
                 <div class="tile">
                     <div class="tile-body">
                         <div class="row element-button">
+                        
+                         <div class="col-sm-2">
+
+                <a class="btn btn-add btn-sm"  title="Quay lại" href="ManageProduct">
+                   <i class="fas fa-chevron-left"></i> Quay lại
+                </a>
+              </div>
+                          
                           <div class="col-sm-2">
               
-                            <a class="btn btn-add btn-sm" title="Thêm" onclick="location.href='EditProduct.jsp'"><i class="fas fa-plus"></i>
-                                Tạo mới sản phẩm</a>
+                            <a class="btn btn-add btn-sm" title="Thêm" onclick="location.href='addCategory.jsp'"><i class="fas fa-plus"></i>
+                                Tạo danh mục mới</a>
                           </div>
-                          
-                          
-                          
-                           <div class="col-sm-2">
-	                
-	                			<button class="btn btn-primary btn-sm" type="button" title="Quản lý" 
-                                     onclick="window.location.href='ManageCategory'"  ><i
-	                    class="fas fa-folder-plus"></i> Quản lý hãng sản xuất
-                                      </button>
-                   
-	                
-	             		 </div>
+                            
 
                           </div>
                         <table class="table table-hover table-bordered" id="sampleTable">
@@ -122,63 +119,29 @@
                                 <tr>
                                     
                                   
-                                    <th >Tên sản phẩm</th>
-                                    
-                                    <th >Giá</th>
-                                    <th >Giá sau khi giảm</th>
-                                    <th >Số lượng</th>
-                                    <th >Ảnh</th>
-                                    
-                                   
-                              
-                                  	 <th >Hãng sản xuất</th>
-                                   
-                                  
-                                     <th >Chức năng</th>
+                                    <th >Id</th>
+                                    <th >Hãng sản xuất</th>
+                                     <th width="100" style="text-align: center;">Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${products}" var="o">
+                                <c:forEach items="${categories}" var="o">
                                 <tr>
                                    
                                   
+                                    <td>${o.id}</td>
+                                   
+                                   
                                     <td>${o.name}</td>
-                                   
-                                    <td> <fmt:formatNumber value="${o.price}" type="currency" /></td>
-                                    <td> <fmt:formatNumber value="${o.getDiscount()}" type="currency" /></td>
-                                    <td>${o.quantity}</td>
-                                    <td><img src="${o.thumbnail}" alt="" width="100px;"></td>
-                                   
-                                   
-                                    <c:set var="cate" value="${productDao.getNameCategory(o.getCategory_id())}">
-                                    </c:set>
-                                    <td>${cate}</td>
-                                
-                                    <td style = "display:flex">
+                                    <td style="text-align: center;">
                                     
-                                   <form action="DeleteProduct" method= "post" >
-                                   <input type="hidden" value="${o.id}" name = "idproduct" >
-                                    <button class="btn btn-primary btn-sm trash" type="submit" title="Xóa"
-                                       ><i class="fas fa-trash-alt"></i>
-                                      </button>
-                                      </form>
-                                      
-                            
-                                       <form action="EditProduct" method="get">
-                                       <input type="hidden" value="${o.id}" name = "idproduct" >
-                                      <button class="btn btn-primary btn-sm edit" type="submit" title="Sửa" 
+                                       <form action="EditCategory" method="get">
+                                       <input type="hidden" value="${o.id}" name = "idcate" >
+                                       <input type="hidden" value="${o.name}" name = "namecate" >
+                                      <button class="btn btn-primary btn-lg edit" type="submit" title="Sửa" 
                                         ><i class="fas fa-edit"></i>
                                       </button>
-                                      </form>
-                                      
-                                      
-                                       <form action="Addthumbnail" method="get">
-                                       <input type="hidden" value="${o.id}" name = "idproduct" >
-                                     <button class="btn btn-primary btn-sm trash" type="submit" title="Thêm ảnh" id="show-emp" 
-                                        ><i class="fa fa-picture-o"></i>
-                                      </button>
-                                      </form>
-                                      
+                                      </form>  
                                                       
                                        
                                     </td>
@@ -268,15 +231,7 @@
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-    
-        
-        $(document).ready(function() { 
-            $('#sampleTable').dataTable({ 
-           
-             "order": [] 
-            }); 
-        }) 
-        
+        $('#sampleTable').DataTable();
         //Thời Gian
     function time() {
       var today = new Date();

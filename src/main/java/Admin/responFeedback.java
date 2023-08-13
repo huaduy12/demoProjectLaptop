@@ -18,31 +18,41 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Dao.orderDao;
-import Dao.productDao;
-import Model.Order;
-import Model.Orderdetail;
-import Model.Product;
+import Dao.concactDao;
+import Dao.userDao;
+import Model.Feedback;
+import Model.User;
 
 /**
- * Servlet implementation class UpdateStatus
+ * Servlet implementation class responFeedback
  */
-@WebServlet("/UpdateStatus")
-public class UpdateStatus extends HttpServlet {
+@WebServlet("/responFeedback")
+public class responFeedback extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateStatus() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+   
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		String idString = request.getParameter("id");
+		int id = 0;
+		if (idString != null) {
+			id = Integer.parseInt(idString);
+		}
+		concactDao concactDao = new concactDao();
+		Feedback feedback = concactDao.getListFeedbackById(id);
+		
+		userDao userDao = new userDao();
+		User user = userDao.getUserById(feedback.getUser_id());
+		
+		request.setAttribute("feedback",feedback);
+		request.setAttribute("username", user.getUsername());
+		request.getRequestDispatcher("ResponContact.jsp").forward(request, response);
+		
 		
 	}
 
@@ -53,41 +63,25 @@ public class UpdateStatus extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
+		int id = Integer.parseInt(request.getParameter("idfeedback"));
 		
-		 String orderdetailId = request.getParameter("orderdetail_id");
-		  String status = request.getParameter("status");
-		  
-		  orderDao orderDao = new orderDao();
-		  productDao productDao = new productDao();
-		  orderDao.updateStatusOrderdetail(Integer.parseInt(orderdetailId),Integer.parseInt(status));
-		  
-		  Orderdetail orderdetail = orderDao.getOrderdetail(Integer.parseInt(orderdetailId));
-		  Order order = orderDao.getOrderById(orderdetail.getOrder_id());
-		  String email = order.getEmail();
-		  System.out.println(email);
-		  Product product = productDao.getProductWishlist(orderdetail.getProduct_id());
-		  
-		  final String mess;
-		  if(Integer.parseInt(status) == 2) {
-		   mess = "<h1>Cảm ơn bạn đã đặt hàng</h1>"
-                  + "<p>Dưới đây là thông tin sản phẩm bạn đã đặt:</p>"
-                  + "<img src='" + product.getThumbnail() + "' alt='Product Image' /><br>"
-                  + "<h3>" + product.getName() + "</h3>"
-                  + "<p>Giá: " +new java.text.DecimalFormat("#,###").format( product.getPrice()) + "đ</p>"
-                  + "<p>Số lượng: " + orderdetail.getQuantity() + "</p>";
-		    }
-		  
-		  else if(Integer.parseInt(status) == 3) {
-		   mess = "<h1>Rất tiếc đơn hàng của bạn đã bị hủy vì lý do ngoại lệ. Rất xin lỗi bạn</h1>"
-                  + "<p>Dưới đây là thông tin sản phẩm bạn đã đặt:</p>"
-                  + "<img src='" + product.getThumbnail() + "' alt='Product Image' /><br>"
-                  + "<h3>" + product.getName() + "</h3>"
-                  + "<p>Giá: " +new java.text.DecimalFormat("#,###").format( product.getPrice())+ "đ</p>"
-                  + "<p>Số lượng: " + orderdetail.getQuantity() + "</p>";
-		    }else {
-				mess = "";
-			}
-		  
+		String respon = request.getParameter("respon");
+		String username = request.getParameter("username");
+		String email= request.getParameter("email");
+		
+	
+		concactDao concactDao = new concactDao();
+		concactDao.updateFeedback(id);
+		
+		 final String mess;
+		 
+		   mess = "<h1>Cảm ơn bạn đã phản hồi</h1>"
+                 + "<p>Chung tôi rất cảm ơn về phản hồi của bạn. Dưới đây là phần trả lời của chúng tôi:</p>"
+                
+                 + "<p>Chào: " +username + ".</p>"
+                 + "<p>Chúng tôi xin trả lời bạn: " + respon + "</p>";
+		
+		 
 		  
 		  
 		// Tạo một ExecutorService để chạy tiến trình gửi email ngầm
@@ -110,7 +104,7 @@ public class UpdateStatus extends HttpServlet {
 	                MimeMessage message = new MimeMessage(session);
 	                message.setFrom(new InternetAddress(email));
 	                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-	                message.setSubject("Đơn hàng của bạn đã được xác nhận.");
+	                message.setSubject("Phản hồi từ website bán laptop.");
 	                message.setContent(mess, "text/html;charset=UTF-8");
 	                Transport.send(message);
 
@@ -120,9 +114,9 @@ public class UpdateStatus extends HttpServlet {
 	        });
 
 	        executor.shutdown(); // Đóng ExecutorService khi đã hoàn thành
-  
-		  response.sendRedirect("ManageOrder.jsp");
- 
+		
+		response.sendRedirect("ManageContact.jsp");
+		
 	}
 
 }

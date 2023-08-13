@@ -252,8 +252,8 @@
               <div class="f-icon">
                 <img src="img/features/f-icon1.png" alt="" />
               </div>
-              <h6>Free Delivery</h6>
-              <p>Free Shipping on all order</p>
+              <h6>Miễn phí vận chuyển</h6>
+              <p>Miễn phí vận chuyển tất cả các đơn hàng</p>
             </div>
           </div>
           <!-- single features -->
@@ -262,8 +262,8 @@
               <div class="f-icon">
                 <img src="img/features/f-icon2.png" alt="" />
               </div>
-              <h6>Return Policy</h6>
-              <p>Free Shipping on all order</p>
+              <h6>Chính sách hoàn trả</h6>
+              <p>Hoàn trả lỗi 1 đổi 1</p>
             </div>
           </div>
           <!-- single features -->
@@ -272,8 +272,8 @@
               <div class="f-icon">
                 <img src="img/features/f-icon3.png" alt="" />
               </div>
-              <h6>24/7 Support</h6>
-              <p>Free Shipping on all order</p>
+              <h6>Hỗ trợ 24/7</h6>
+              <p>Phục vụ nhiệt tình</p>
             </div>
           </div>
           <!-- single features -->
@@ -282,8 +282,8 @@
               <div class="f-icon">
                 <img src="img/features/f-icon4.png" alt="" />
               </div>
-              <h6>Secure Payment</h6>
-              <p>Free Shipping on all order</p>
+              <h6>Chính sách bảo mật</h6>
+              <p>Bảo mật an toàn tuyệt đối</p>
             </div>
           </div>
         </div>
@@ -430,24 +430,30 @@
                       </div>
                       <%
                        if(user == null){ %>
-                    	       <div class="add-to-cart">
                        
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                      <form action="BuyServlet" method="post">
+                    <input type="hidden" value="<%=product.getId()%>" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       
                       <%if(user != null){ %>
-                      <form action="addOrderServlet" method="post">
+                       <form action="addOrderServlet" method="post">
                       <div class="add-to-cart">
                         <input type="hidden" value="<%=product.getId()%>" name = 'idproductcart'>
                         <button class="add-to-cart-btn" type="submit" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
-                      </form>
+                      </form> 
+                      
+                      
                       <%} %>
                     </div>
                     <!-- /product -->
@@ -570,17 +576,20 @@
                       </div>
                       <%
                        if(user == null){ %>
-                    	       <div class="add-to-cart">
-                       
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                      <form action="BuyServlet" method="post">
+                    <input type="hidden" value="<%=product.getId()%>" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       
                       <%if(user != null){ %>
-                      <form action="addOrderServlet" method="post">
+                        <form action="addOrderServlet" method="post">
                       <div class="add-to-cart">
                         <input type="hidden" value="<%=product.getId()%>" name = 'idproductcart'>
                         <button class="add-to-cart-btn" type="submit" >
@@ -588,6 +597,8 @@
                         </button>
                       </div>
                       </form>
+                      
+                      
                       <%} %>
                       
                     </div>
@@ -800,12 +811,15 @@
                       </div>
                        <%
                        if(user == null){ %>
-                    	       <div class="add-to-cart">
-                       
-                        <button class="add-to-cart-btn" onclick="redirectToLogin()" >
+                       <form action="BuyServlet" method="post">
+                    <input type="hidden" value="<%=product.getId()%>" name = 'id'>
+                        <div class="add-to-cart">
+                        <button class="add-to-cart-btn" >
                          <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
                         </button>
                       </div>
+                      
+                      </form> 
                       <% }
                       %>
                       
@@ -896,6 +910,8 @@
     window.location.href = "login.jsp";
   }
 </script>
+
+ 
    
    <script>
     function countdown() {
@@ -947,6 +963,7 @@ countdown();
    </script>
    
    <!-- Thêm mã JavaScript sau thẻ </body> -->
+
 <script>
 $(document).ready(function() {
   // Kiểm tra nếu có thông báo trong session
@@ -954,15 +971,15 @@ $(document).ready(function() {
      if (cartMessage != null) { %>
     // Hiển thị modal khi tài liệu đã tải xong
     $('#myModal').modal('show');
-   <% session.removeAttribute("cartMessage");%>
     setTimeout(function() {
         $('#myModal').modal('hide');
-      }, 1000);
-    <% session.removeAttribute("cartMessage"); // Xóa thông báo sau khi hiển thị
+      }, 1000); 
+   <% session.removeAttribute("cartMessage"); // Xóa thông báo sau khi hiển thị
      } %>
 });
 </script>
-   
+
+
  <script>
 $(document).ready(function() {
   // Kiểm tra nếu có thông báo trong session
@@ -1039,6 +1056,12 @@ $(document).ready(function() {
     xhr.send(params);
   }
 </script>
+
+
+
+
+
+
 
 
     <!-- jQuery Plugins -->

@@ -56,6 +56,7 @@ public class Order {
 		this.status = status;
 	}
 	
+	
 	public Order( String fullname, String email, String phonenumber, String address,
 			String note, double total_money, int user_id) {
 		super();
@@ -70,10 +71,36 @@ public class Order {
 		this.user_id = user_id;
 		
 	}
+	
+	public Order( String fullname, String email, String phonenumber, String address,
+			String note, double total_money) {
+		super();
+		
+		this.fullname = fullname;
+		this.email = email;
+		this.phonenumber = phonenumber;
+		this.address = address;
+		this.note = note;
+	
+		this.total_money = total_money;
+	
+		
+	}
+	
 	public Order(int id, double total_money, int user_id) {
 		super();
 		
 		this.id = id;
+		this.total_money = total_money;
+		this.user_id = user_id;
+		
+	}
+	
+	public Order(int id,String email, double total_money ,int user_id) {
+		super();
+		
+		this.id = id;
+		this.email = email;
 		this.total_money = total_money;
 		this.user_id = user_id;
 		

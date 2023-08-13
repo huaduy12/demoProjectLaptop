@@ -83,7 +83,8 @@
       <li><a class="app-menu__item" href="ManageOrder.jsp"><i class='app-menu__icon bx bx-task'></i><span
             class="app-menu__label">Quản lý đơn hàng</span></a></li>
      
-          </span></a></li>
+         <li><a class="app-menu__item" href="ManageContact.jsp"><i class='app-menu__icon bx bx-phone'></i><span
+            class="app-menu__label">Quản lý liên hệ</span></a></li>
     
       <li><a class="app-menu__item active" href="RevenueReport.jsp"><i
             class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
@@ -109,7 +110,7 @@
                         <h4>Tổng khách hàng</h4>
                          <%int countuser = userDao.getCountUser();
             %>
-                        <p><b><%=countuser%> nhân viên</b></p>
+                        <p><b><%=countuser%> người dùng</b></p>
                     </div>
                 </div>
             </div>
@@ -227,7 +228,7 @@
                                 
                                
                                     <tr>
-                                            <th>ID đơn hàng</th>
+                                            <th>Mã đơn hàng</th>
                                             <th>Khách hàng</th>
                                             <th>Đơn hàng</th>
                                             <th>Số lượng</th>

@@ -1,27 +1,28 @@
-package Servlet;
+package Admin;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import Dao.wishlistDao;
-import Model.User;
+import Dao.productDao;
+import Model.Category;
 
 /**
- * Servlet implementation class removeProductWish
+ * Servlet implementation class ManageCategory
  */
-@WebServlet("/removeProductWish")
-public class removeProductWish extends HttpServlet {
+@WebServlet("/ManageCategory")
+public class ManageCategory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public removeProductWish() {
+    public ManageCategory() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,34 +31,19 @@ public class removeProductWish extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		productDao productDao = new productDao();
+		List<Category> categories = productDao.getListCategorys();
+		request.setAttribute("categories", categories);
+		request.getRequestDispatcher("ManageCategory.jsp").forward(request, response);
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		
-		wishlistDao wishlistDao = new wishlistDao();
-		
-		
-		HttpSession session = request.getSession();
-		
-		User user = (User) session.getAttribute("user");
-		
-		String idproductString = request.getParameter("idproductremove");
-		
-		int id = -1;
-		if(idproductString != null) {
-			id = Integer.parseInt(idproductString);
-		}
-		
-		if(user != null) {
-			wishlistDao.removeWishlist(id, user.getId());
-		}
-		response.sendRedirect("loadwishlist");
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
