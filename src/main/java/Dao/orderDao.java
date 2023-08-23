@@ -1,5 +1,6 @@
 package Dao;
 
+import java.net.http.HttpRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,11 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import Connection.ConnectionUtil;
 import Model.Cart;
 import Model.Item;
 import Model.Order;
 import Model.Orderdetail;
+import Model.Product;
 import Model.SalesStatistics;
 
 public class orderDao {
@@ -474,7 +479,8 @@ public int getIdOrderByUserNoUser() {
 	public List<Orderdetail> getListOrderdetailsAdmin() {
 		try (Connection connection = ConnectionUtil.getConnection();
 
-				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status = 1 order by id desc;");
+				PreparedStatement st = connection.prepareStatement(
+						"select * from orderdetail where status = 1 or status = 4 order by id desc;");
 				ResultSet rs = st.executeQuery()) {
 			List<Orderdetail> result = new ArrayList<>();
 			while (rs.next()) {
@@ -498,7 +504,7 @@ public int getIdOrderByUserNoUser() {
 	public List<Orderdetail> getListOrderdetailsAdminNotstatus1() {
 		try (Connection connection = ConnectionUtil.getConnection();
 
-				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status != 1 and status is not null order by id desc;");
+				PreparedStatement st = connection.prepareStatement("select * from orderdetail where status != 1 and status != 4 and status is not null order by id desc;");
 				ResultSet rs = st.executeQuery()) {
 			List<Orderdetail> result = new ArrayList<>();
 			while (rs.next()) {
@@ -770,6 +776,42 @@ public int getIdOrderByUserNoUser() {
 	    }
 	    return total;
 	}
+	
+	public int countItemCookie(HttpServletRequest request) {
+		   int count = 0;
+		  
+		   productDao productDAO = new productDao();
+	    	Cookie[] cookies = request.getCookies();
+			
+			List<Product> list = productDAO.getListProducts();
+			String txt = "";
+			
+			if(cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("cart")) {
+						txt += cookie.getValue();
+					}
+				}
+			}
+			
+			Cart cart = new Cart(txt, list);
+			List<Item> items = cart.getItems();
+			
+			
+			if(items.size() != 0) {
+				count = items.size();
+			}
+			else {
+				count = 0;
+			}
+		   
+		   
+		   
+		    return count;
+		}
+	
+	
+	
 	
 	public List<Orderdetail> getListOrderdetailOrderBy(int orderid) {
 		try (Connection connection = ConnectionUtil.getConnection();

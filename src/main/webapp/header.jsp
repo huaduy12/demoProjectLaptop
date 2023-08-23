@@ -48,6 +48,9 @@ select{
 
 </head>
 <body>
+
+
+
  <!-- HEADER -->
     
     <header class="header-area">
@@ -157,35 +160,14 @@ select{
         		    if(user != null){
         		        order = orderDao.getOrderByUserId(user.getId());
         		        if(order != null){
+        		        	  
+        		        	
         		        	  count = orderDao.countItemOrderDetail(order.getId());
+        		        	
         		        }
             		  
         		    }else{
-        		    	productDao productDAO = new productDao();
-        		    	Cookie[] cookies = request.getCookies();
-        				
-        				List<Product> list = productDAO.getListProducts();
-        				String txt = "";
-        				
-        				if(cookies != null) {
-        					for (Cookie cookie : cookies) {
-        						if (cookie.getName().equals("cart")) {
-        							txt += cookie.getValue();
-        						}
-        					}
-        				}
-        				
-        				Cart cart = new Cart(txt, list);
-        				List<Item> items = cart.getItems();
-        				
-        				
-        				if(items.size() != 0) {
-        					count = items.size();
-        				}
-        				else {
-        					count = 0;
-        				}
-        		    	
+        		    	count = orderDao.countItemCookie(request);
         		    }
         		    	
                     %>
@@ -200,6 +182,13 @@ select{
                     	  orderdetails = orderDao.getListOrderdetailOrderBy(order.getId());
                       }
                     if(orderdetails != null){
+                    	
+                    	
+                    	
+                    	
+                    // cập nhập lại orderdetail sau khi add thêm cart từ cookie	
+                    orderdetails = orderDao.getListOrderdetailOrderBy(order.getId());
+                    
                      for(Orderdetail orderdetail : orderdetails){
                     	  Product product = productDao.getProductById(orderdetail.getProduct_id());
                     %>
@@ -220,6 +209,9 @@ select{
 
                      <%}
                     }else{
+                    	
+                    	
+                    	
                     	productDao productDAO = new productDao();
         		    	Cookie[] cookies = request.getCookies();
                     	List<Product> list = productDAO.getListProducts();
@@ -251,6 +243,7 @@ select{
                         </div>
                        
                       </div>
+                    
                     <%		 }
                     }
                      %>
@@ -262,7 +255,8 @@ select{
                       <%double t = 0.0;
                         if(order != null){
                         	t =orderDao.calculateOrderTotal(order.getId());
-                        }else{
+                        }
+                        else{
                         	productDao productDAO = new productDao();
             		    	Cookie[] cookies = request.getCookies();
                         	List<Product> list = productDAO.getListProducts();
@@ -294,7 +288,8 @@ select{
                   </div>
                 </div>
                 <!-- /Cart -->
-
+                
+               
                 <!-- Menu Toogle -->
                 <div class="menu-toggle">
                   <a href="#">

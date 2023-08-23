@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro-Ecommerce</title>
+    <title>Giới thiệu</title>
 
     <!-- Google font -->
     <link
@@ -48,13 +48,39 @@
 	.cart-btns{
 		display: flex
 		}
-		
+    .cart-btns a{
+       flex-grow: 1
+    }
+    
+     .cart-btns form{
+       flex-grow: 1
+    }
+      .cart-btns form button{
+       width: 100% !important;
+    }
+    
+    
+    
      
 .text-black-50{
    color: #000 !important;
   text-align: justify !important;
   text-justify: inter-word;
+  font-family: "Montserrat", sans-serif;
 }
+    
+ .cart-dropdown .cart-btns button {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background-color: #d10024;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+    border: none;
+}   
     
 </style>
   
@@ -94,7 +120,7 @@
             <h2 class="font-weight-bold heading text-primary mb-4">Giới thiệu</h2>
           </div>
           <div class="col-lg-6">
-            <p class="text-black-50">
+            <p class="text-black-50" >
             Chào mừng bạn đến với website bán laptop của chúng tôi!
             </p>
             <p class="text-black-50">

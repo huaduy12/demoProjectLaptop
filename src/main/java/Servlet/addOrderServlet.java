@@ -75,7 +75,7 @@ public class addOrderServlet extends HttpServlet {
 			Order order = orderDao.getOrderByUserId(user.getId());
 			
 			if(order == null) {
-				Order newOrder = new Order(0, user.getId());
+				Order newOrder = new Order(0, user.getId());  // total, user_id
 				orderDao.addOrder(newOrder);
 				 order = newOrder; // Gán cart mới tạo cho biến cart
 			}
@@ -91,11 +91,15 @@ public class addOrderServlet extends HttpServlet {
 		    	orderDao.addOrderdetail(orderdetail);
 		    }else {
 		    	
-		    	Orderdetail updateorderDetail = new Orderdetail(product.getDiscount(),checkOrderDetail.getQuantity(),product.getId(),order.getId() );
+		    	Orderdetail updateorderDetail = new Orderdetail
+		    			(product.getDiscount(),checkOrderDetail.getQuantity(),product.getId(),order.getId() );
 				orderDao.updateQuantityOrderDetail(updateorderDetail);
 				
 				checkOrderDetail = orderDao.getOrderDetail(orderdetail);
-			   Orderdetail updateTotalorderDetail = new Orderdetail(product.getDiscount(),checkOrderDetail.getQuantity(),product.getDiscount()*(checkOrderDetail.getQuantity()),product.getId(),order.getId() );
+				
+			   Orderdetail updateTotalorderDetail = new Orderdetail(product.getDiscount(),checkOrderDetail.getQuantity(),
+					   product.getDiscount()*(checkOrderDetail.getQuantity()),product.getId(),order.getId() );
+			   
 			   orderDao.updateTotalOrderDetail(updateTotalorderDetail);
 				
 			}

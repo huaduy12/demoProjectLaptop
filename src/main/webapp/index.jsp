@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro-Ecommerce</title>
+    <title>Cửa hàng bán laptop</title>
 
     <!-- Google font -->
     <link
@@ -54,6 +54,10 @@
   <body>
    
     <jsp:include page="header.jsp"></jsp:include>
+    
+     
+        
+   
     
    
      <div class="modal fade" id="modaLikeSuccess" role="dialog" style="background-color: transparent;">
@@ -867,15 +871,16 @@
         <div class="row">
           <div class="col-md-12">
             <div class="newsletter">
-              <p>Sign Up for the <strong>NEWSLETTER</strong></p>
-              <form>
+              <p>Liên hệ <strong>trực tiếp</strong></p>
+              <form action="DirectConcact" method="post">
                 <input
                   class="input"
                   type="email"
-                  placeholder="Enter Your Email"
+                  name = "email"
+                  placeholder="Nhập email của bạn"
                 />
-                <button class="newsletter-btn">
-                  <i class="fa fa-envelope"></i> Subscribe
+                <button class="newsletter-btn" type="submit">
+                  <i class="fa fa-envelope"></i> Liên hệ
                 </button>
               </form>
               <ul class="newsletter-follow">

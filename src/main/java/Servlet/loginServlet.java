@@ -74,7 +74,7 @@ public class loginServlet extends HttpServlet {
 		if(user != null) {
 			session.setAttribute("user", user);
 			session.setMaxInactiveInterval(60*60*24); // hạn 1 ngày
-			response.sendRedirect("index.jsp");
+			response.sendRedirect("index");
 		} else if (userAdmin != null) {
 			session.setAttribute("userAdmin", userAdmin);
 			session.setMaxInactiveInterval(60*60*24); // hạn 1 ngày

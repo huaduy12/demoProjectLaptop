@@ -15,6 +15,8 @@ import Model.User;
 
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -54,7 +56,7 @@ public class fogotPasswordServlet extends HttpServlet {
 
 		String email = request.getParameter("email");
 		RequestDispatcher dispatcher = null;
-		int otpvalue = 0;
+		
 		HttpSession mySession = request.getSession();
 		
 		
@@ -64,8 +66,13 @@ public class fogotPasswordServlet extends HttpServlet {
 		if(user!=null) {
 			// sending otp
 			Random rand = new Random();
-			otpvalue = rand.nextInt(1255650);
+		  final int	otpvalue = rand.nextInt(1255650);
+         
+		// Tạo một ExecutorService để chạy tiến trình gửi email ngầm
+			  ExecutorService executor = Executors.newSingleThreadExecutor();
 
+		        executor.submit(() -> {	
+			
 			String to = email;// change accordingly
 			// Get the session object
 			
@@ -97,6 +104,8 @@ public class fogotPasswordServlet extends HttpServlet {
 			catch (MessagingException e) {
 				throw new RuntimeException(e);
 			}
+		        });
+		        executor.shutdown(); // Đóng ExecutorService khi đã hoàn thành
 			dispatcher = request.getRequestDispatcher("enterOtp.jsp");
 			request.setAttribute("message","Mã otp đã được gửi đến email của bạn");
 			

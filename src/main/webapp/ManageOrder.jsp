@@ -153,6 +153,10 @@
                     <td><span class="badge bg-danger">Đã hủy</span></td>
                     <%} %>
                     
+                    <% if(o.getStatus() ==4){ %>
+                    <td><span class="badge bg-info">Đang vận chuyển</span></td>
+                    <%} %>
+                    
                     
                     <td>
                     <form id="form_<%=o.getId()%>" method="post" action="UpdateStatus">
@@ -162,20 +166,22 @@
 	                       
       						 <option value="1" selected="selected" > <span class="badge bg-info">Đang chờ xử lý</span> </option>
       						  <option value="2"  > <span class="badge bg-success">Giao dịch thành công</span> </option>
+      						  <option value="4" > <span class="badge bg-danger">Đang vận chuyển</span></option>
       						   <option value="3" > <span class="badge bg-danger">Đã hủy</span></option>
       						 
       			      </select>
                     <%} %>
                     
-                    <% //if(o.getStatus() ==3){ %>
-                <!--      <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
+                    <% if(o.getStatus() ==4){ %>
+                     <select class="form-control"  name = "status"  onchange="submitForm(<%=o.getId()%>)">
 	                       
-      						 <option value="3" selected="selected" > <span class="badge bg-danger"> Đã hủy </span> </option>
+	                        <option value="4" selected="selected" > <span class="badge bg-danger">Đang vận chuyển</span></option>
       						  <option value="2"  > <span class="badge bg-success">Giao dịch thành công</span> </option>
+      						  <option value="3" > <span class="badge bg-danger"> Đã hủy </span> </option>
       						   <option value="1" > <span class="badge bg-info">Đang chờ xử lý</span></option>
       						 
-      			      </select> -->
-                    <%//} %>
+      			      </select> 
+                    <%} %>
                     
                     </form>
                      
@@ -208,6 +214,9 @@
                     <td><span class="badge bg-danger">Đã hủy</span></td>
                     <%} %>
                     
+                     <% if(o.getStatus() ==4){ %>
+                    <td><span class="badge bg-info">Đang vận chuyển</span></td>
+                    <%} %>
                     
                     <td>
                     <form id="form_<%=o.getId()%>" method="post" action="UpdateStatus">

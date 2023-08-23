@@ -161,7 +161,24 @@
                   </div>
                 </td>
                 <td class="align-middle"><%=new java.text.DecimalFormat("#,###").format(orderdetail.getTotal_money())%></td>
-               <td class="align-middle"><%=(orderdetail.getStatus() == 1) ? "Đang xử lý" : ((orderdetail.getStatus() == 2) ? "Giao dịch thành công" : "Bị hủy bỏ")%></td>
+              
+               <%if(orderdetail.getStatus() == 1){ %>
+                   <td class="align-middle"> Đang xử lý </td>
+               <%} %>
+               
+                  <%if(orderdetail.getStatus() == 2){ %>
+                   <td class="align-middle"> Giao dịch thành công </td>
+               <%} %>
+               
+                  <%if(orderdetail.getStatus() == 3){ %>
+                   <td class="align-middle"> Đã hủy </td>
+               <%} %>
+               
+                  <%if(orderdetail.getStatus() == 4){ %>
+                   <td class="align-middle"> Đang chờ vận chuyển </td>
+               <%} %>
+               
+               
               </tr>
  				<%} 
                     

@@ -64,7 +64,7 @@ public class UpdateStatus extends HttpServlet {
 		  Orderdetail orderdetail = orderDao.getOrderdetail(Integer.parseInt(orderdetailId));
 		  Order order = orderDao.getOrderById(orderdetail.getOrder_id());
 		  String email = order.getEmail();
-		  System.out.println(email);
+		  //System.out.println(email);
 		  Product product = productDao.getProductWishlist(orderdetail.getProduct_id());
 		  
 		  final String mess;
@@ -84,7 +84,16 @@ public class UpdateStatus extends HttpServlet {
                   + "<h3>" + product.getName() + "</h3>"
                   + "<p>Giá: " +new java.text.DecimalFormat("#,###").format( product.getPrice())+ "đ</p>"
                   + "<p>Số lượng: " + orderdetail.getQuantity() + "</p>";
-		    }else {
+		    }
+		  else if(Integer.parseInt(status) == 4) {
+			   mess = "<h1>Đơn hàng của bạn đã được bàn giao cho đơn vị vận chuyển</h1>"
+	                  + "<p>Dưới đây là thông tin sản phẩm bạn đã đặt:</p>"
+	                  + "<img src='" + product.getThumbnail() + "' alt='Product Image' /><br>"
+	                  + "<h3>" + product.getName() + "</h3>"
+	                  + "<p>Giá: " +new java.text.DecimalFormat("#,###").format( product.getPrice())+ "đ</p>"
+	                  + "<p>Số lượng: " + orderdetail.getQuantity() + "</p>";
+			    }
+		  else {
 				mess = "";
 			}
 		  
@@ -110,7 +119,7 @@ public class UpdateStatus extends HttpServlet {
 	                MimeMessage message = new MimeMessage(session);
 	                message.setFrom(new InternetAddress(email));
 	                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-	                message.setSubject("Đơn hàng của bạn đã được xác nhận.");
+	                message.setSubject("Đơn hàng của bạn đã được chúng tôi xác nhận.");
 	                message.setContent(mess, "text/html;charset=UTF-8");
 	                Transport.send(message);
 
