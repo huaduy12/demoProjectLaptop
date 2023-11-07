@@ -88,12 +88,16 @@ public class inforDatailServlet extends HttpServlet {
 		List<Review> list = reviewDao.getReviewByPage(reviews, start, end);
 		
 		
+	 if(product != null) {
+		 request.setAttribute("reviews", list);
+			request.setAttribute("page", page);
+			request.setAttribute("numberPage",numberPage);
+			
+			request.getRequestDispatcher("product.jsp").forward(request, response);
+	 }else {
+		response.sendRedirect("index.jsp");
+	}
 		
-		request.setAttribute("reviews", list);
-		request.setAttribute("page", page);
-		request.setAttribute("numberPage",numberPage);
-		
-		request.getRequestDispatcher("product.jsp").forward(request, response);
 	}
 
 	/**

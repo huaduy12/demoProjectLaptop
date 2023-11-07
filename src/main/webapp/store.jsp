@@ -230,7 +230,7 @@
                   <span class="qty-up">+</span>
                   <span class="qty-down">-</span>
                 </div>
-                 <span>(đơn vị triệu)</span>
+                 <span>triệu</span>
               </div>
                 <button class="btn btn-filter" type="submit"> Lọc sản phẩm </button>
             </div>
